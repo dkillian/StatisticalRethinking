@@ -1,0 +1,114 @@
+
+---
+title: "Statistical Rethinking"
+subtitle: "Chapter 4 - Linear Models"
+output:
+  html_document:
+  toc: yes
+toc_depth: '5'
+toc_float: yes
+---
+  
+```{r}
+library(tidyverse)
+library(strengejacke)
+library(psych)
+library(brms)
+library(skimr)
+library(knitr)
+library(xlsx)
+library(here)
+library(haven)
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = here())
+```
+
+```{r global_options}
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T)
+```
+
+```{r}
+options(digits=3, scipen=6)
+```
+
+### 4.1 Why normal distributins are normal
+
+```{r}
+set.seed(834895)
+pos <- data.frame(rep=1:1000,
+                  position=replicate(1000, sum(runif(16,-1,1))))
+head(pos)
+```
+
+```{r}
+describe(pos$position)
+```
+
+
+```{r}
+ggplot(pos, aes(x=position)) + 
+  stat_density(geom="line") 
+
++ 
+  geom_point(aes(position))
++
+  geom_line(aes())
+```
+
+
+```{r}
+pos2 <- replicate(100, runif(16,-1,1)) %>%
+  as_tibble() %>%
+  rbind(0,.) %>%
+  pivot_longer(cols=1:100,
+               names_to="step",
+               values_to="value") %>%
+  mutate(player=rep(1:100, each=17)) %>%
+  group_by(player) %>%
+  mutate(position=cumsum(value)) %>%
+  ungroup()
+pos2
+```
+
+
+```{r}
+ggplot(pos2, aes(x=step, y=position, group=player)) + 
+  geom_line(color="skyblue4", alpha=.4, size=.5) 
+
++ 
+  scale_x_continuous(breaks=0:16)
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+
