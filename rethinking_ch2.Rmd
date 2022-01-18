@@ -1,0 +1,200 @@
+---
+title: "Statistical Rethinking"
+subtitle: "Chapter 2 notes"
+author: "Dan Killian"
+date: "1/13/2022"
+output:
+  bookdown::html_document2:
+    number_sections: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    theme: paper
+    fig.caption: true
+    code_folding: hide
+    df_print: kable
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+library(here)
+
+source(here("../../Dropbox/r prep.R"))
+
+```
+
+# Two-way distributions
+
+Let's say we're interested in joint and marginal probabilities of two variables, eye and hair color. Here's a frequency table.
+
+```{r}
+freqs <- data.frame(eye_color=c("brown","blue","hazel","green","h"),
+                    black = c(.11,.03,.03,.01,.18),
+                    brunette = c(.2,.14,.09,.05,.48),
+                    red = c(.04,.03,.02,.02,.12),
+                    blond = c(.01,.16,.02,.03,.21),
+                    e = c(.37,.36,.16,.11,1))
+
+freqs                    
+
+```
+
+We denote the joint probability of eye color *e* and hair color *h* as $p(e,h)$, and note that $p(e, h) = p(h,e)$.
+
+We obtain the marginal probabilities of hair or eye color by summing the joint probabilities across rows (eye color) or columns (hair color). We denote the marginal probability of eye color as $p(e)$ and hair color as $p(h)$, such that $p(e)=\sum_h{p(e,h)}$ and $p(h)=\sum_e{p(e,h)}$.
+
+Generalizing this, consider a row variable *r* and column variable *c*. When the variables are continuous rather than discrete, then we take an integral rather than a sum. So, $p(r)=\int{dc\hspace{1mm} p(r,c)}$ and $p(c)=\int{dr\hspace{1mm}p(r,c)}$.
+
+Suppose we know an individual has blue eyes. Conditional on that information, what are the probabilities for hair color? Blue-eyed individuals make up 36 percent of this sample. We divide the set of joint probabilities of blue eyes and each hair color by the marginal probability of blue eyes, we rescale the probabilities to sum to one, where one represents the sub-sample of people with blue eyes. These probabilities of hair color, conditional on blue eye color, can be denoted as $p(h|e=blue)=p(e=blue,h)/p(e=blue)$
+
+```{r}
+h_blue <- freqs[2,2:5] / freqs[2,6]
+
+h_blue
+
+```
+
+And these probabilities should sum to one.
+
+```{r}
+sum(h_blue)
+```
+
+In general form, we say that $p(h|e)=p(e,h)/p(e)$ which can also be expressed as $p(h|e)=p(e,h)/\sum_hp(e,h*)$, where \_h\*\_ denotes the full set of hair color values to sum over and *e* denotes a specific value of eye color. More generally, we can go back to the row and column variables: $$p(c|r=x)=\frac{p(r=x,c)}{\sum_{c*}{p(r=x,c*)}}$$
+
+Or:
+
+$$p(c|r=x)=\frac{p(r=x,c)}{p(r=x)}$$ Or if you can maintain in your head that the conditioned variable takes on a definite value, we have:
+
+$$p(c|r)=\frac{p(r,c)}{p(r)}$$ Again, just bearing in mind that the variable *r* takes on a specific value.
+
+To get to Bayes Rule, multiply both sides of above by $p(r)$. $$p(c|r)p(r)=p(r,c)$$
+
+We can do the same thing with $p(r|c)$:
+
+$p(r|c)=\frac{p(c,r)}{p(c)}$ and multiply both sides by $p(c)$  
+
+$$
+p(r|c)p(c)=p(c,r)
+$$
+
+Recall the symmetry with joint probabilities $p(r,c)=p(c,r)$. We can then set the conditional expressions equal to each other.
+
+$$
+p(c|r)p(r)=p(r|c)p(c)
+$$
+Now divide by $p(r)$
+
+$$
+p(c|r)=\frac{p(r|c)p(c)}{p(r)}
+$$
+As a final step, recall that $p(r)$ = 
+
+
+# 2.1 Garden of forking data
+
+Consider a bag containing four marbles that are either blue or white. We don't know the color of each marble, but we know there could be five possibilities: (1) zero blue, (2) one blue, (3) two blue, (4) three blue, or (5) four blue. Consider each possibility as a conjecture about the actual state of the world. Without evidence, we can only assign equal probabilities to each conjecture, so 20 percent. 
+
+We take a marble from the bag, record its color, return it to the bag, and shake it up. We repeat this until we get three draws. The resulting sequence is blue, white, blue (b,w,b). This is sampling with replacement to produce data that can inform our conjectures. 
+
+Figure 2.2 in the text shows the garden of forking data - the enumeration of all possible paths the marble draws may take to produce the draw that was observed, conditional on each conjecture.
+
+By visually inspecting Figure 2.4, we can count up how many ways the observed draw may arise for each conjecture. For the conjecture of zero blue (1), we can know automatically that the probability is zero. Same for conjecture (5) of four blue. 
+
+For conjecture (2) of one blue, there are three paths through the garden of forking data that produce our observed draw. 
+
+For conjecture (3) of two blue, there are eight paths through the garden of forking data. 
+
+For conjecture (5) of three blue, there are nine paths. 
+
+## From counts to probabilities
+
+We multiply the number of ways the observed data could arise against the probability of each conjecture. We'll call the probability of each conjecture the prior probability. With equal probability, the prior has no effect and we call the resulting operation the plausibility. The plausibilities for the set of conjectures are therefore `r c(0,3,8,9,0)`. So three blue becomes our most likely conjecture, but only slightly more likely than the conjecture of two blue. We can call these plausibilities 'likelihoods'. 
+
+More formally, let's define the following: 
+
+> plausibility $\propto$ ways a conjecture can produce observed data $\times$ prior plausibility of the conjecture
+
+Or more succintly: 
+
+> plausibility #\propto$ likelihood $\times$ prior
+
+Once we get the plausibilities of each conjecture, we normalize them in order to generate a set of probabilities. 
+
+```{r}
+
+ways <- c(0,3,8,9,0)
+
+ways / sum(ways) %>%
+  round(3)
+
+```
+Because we assigned equal prior probabilities to each conjecture, these probabilities are just a rescaling of what we saw from the plausibility counts: conjecture (3) is most favored, but only by a tiny amount over conjecture (2). One might consider how different two conjectures should be, in order to say one conjecture is more likely than another. With this set of probabilities, we'd probably want to say that conjectures (2) and (3) are about equally likely. 
+
+
+# 2.2 Building a model
+
+We made it through our first example! Which was designed to tortuously show you that Bayesian analysis is fundamentally just a counting procedure that arise from our assumptions. Given a set of assumptions, we simply compare what is possible. 
+
+Let's proceed to the second example, which will be more like a real-world example. 
+
+
+
+
+
+
+
+## R code 2.2
+dbinom( 6 , size=9 , prob=0.5 )
+
+## R code 2.3
+# define grid
+p_grid <- seq( from=0 , to=1 , length.out=20 )
+
+# define prior
+prior <- rep( 1 , 20 )
+
+# compute likelihood at each value in grid
+likelihood <- dbinom( 6 , size=9 , prob=p_grid )
+
+# compute product of likelihood and prior
+unstd.posterior <- likelihood * prior
+
+# standardize the posterior, so it sums to 1
+posterior <- unstd.posterior / sum(unstd.posterior)
+
+## R code 2.4
+plot( p_grid , posterior , type="b" ,
+      xlab="probability of water" , ylab="posterior probability" )
+mtext( "20 points" )
+
+## R code 2.5
+prior <- ifelse( p_grid < 0.5 , 0 , 1 )
+prior <- exp( -5*abs( p_grid - 0.5 ) )
+
+## R code 2.6
+library(rethinking)
+globe.qa <- map(
+     alist(
+          w ~ dbinom(9,p) ,  # binomial likelihood
+          p ~ dunif(0,1)     # uniform prior
+     ) ,
+     data=list(w=6) )
+
+# display summary of quadratic approximation
+precis( globe.qa )
+
+## R code 2.7
+# analytical calculation
+w <- 6
+n <- 9
+curve( dbeta( x , w+1 , n-w+1 ) , from=0 , to=1 )
+# quadratic approximation
+curve( dnorm( x , 0.67 , 0.16 ) , lty=2 , add=TRUE )
+```
+
+```{r}
+
+```
