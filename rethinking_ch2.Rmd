@@ -140,30 +140,333 @@ We made it through our first example! Which was designed to tortuously show you 
 
 Let's proceed to the second example, which will be more like a real-world example. 
 
+```{r}
+n_1 <- data.frame(prior=1,
+                  param=round(seq(0,1,length.out=20),3)) %>%
+  mutate(lik=dbinom(6,9,param))
+
+n_1
+
+```
+
+```{r}
+n_1 <- data.frame(toss=rep("w", 50),
+                  trials=rep(1,50),
+                  success=rep(1,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=rep(.02,50)) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+#,         prior2 = prior/sum(prior))
+#sum(n_1$lik_raw) # 10 why?
+
+n_1
+
+n_1g <- ggplot(n_1, aes(p_water)) + 
+  geom_vline(xintercept=1, size=1.2, color="darkgoldenrod2", alpha=.3) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W",
+       caption="n=1\nW\nobserved water 100%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_1g
+
+d
+
+n_2 <- data.frame(toss=rep("l", 50),
+                  trials=rep(2,50),
+                  success=rep(1,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=n_1$lik) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+n_2
+
+n_2g <- ggplot(n_2, aes(p_water)) + 
+  geom_vline(xintercept=.5, size=1.2, color="darkgoldenrod2", alpha=.4) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W L",
+       caption="n=2\nW L\nobserved water 50%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_2g
+
+library(patchwork)
+n_1g + n_2g
+
+d
+
+n_3 <- data.frame(toss=rep("w", 50),
+                  trials=rep(3,50),
+                  success=rep(2,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=n_2$lik) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+n_3
+
+n_3g <- ggplot(n_3, aes(p_water)) + 
+  geom_vline(xintercept=.67, size=1.2, color="darkgoldenrod2", alpha=.4) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W L W",
+       caption="n=3\nW L W\nobserved water 67%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_3g
+
+
+n_1g + n_2g + n_3g
+
+
+d
+
+n_4 <- data.frame(toss=rep("w", 50),
+                  trials=rep(4,50),
+                  success=rep(3,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=n_3$lik) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+n_4
+
+n_4g <- ggplot(n_4, aes(p_water)) + 
+  geom_vline(xintercept=.75, size=1.2, color="darkgoldenrod2", alpha=.4) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W L W W",
+       caption="n=4\nW L W W\nobserved water 75%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_4g
+
+
+n_1g + n_2g + n_3g + n_4g
+
+
+d
+
+n_5 <- data.frame(toss=rep("w", 50),
+                  trials=rep(5,50),
+                  success=rep(4,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=n_4$lik) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+n_5
+
+n_5g <- ggplot(n_5, aes(p_water)) + 
+  geom_vline(xintercept=.8, size=1.2, color="darkgoldenrod2", alpha=.4) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W L W W W",
+       caption="n=5\nW L W W W\nobserved water 80%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_5g
+
+n_1g + n_2g + n_3g + n_4g + n_5g
+
+d
+
+n_6 <- data.frame(toss=rep("l", 50),
+                  trials=rep(6,50),
+                  success=rep(4,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=n_5$lik) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+n_6
+
+n_6g <- ggplot(n_6, aes(p_water)) + 
+  geom_vline(xintercept=.67, size=1.2, color="darkgoldenrod2", alpha=.4) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W L W W W L",
+       caption="n=6\nW L W W W L\nobserved water 67%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_6g
+
+n_1g + n_2g + n_3g + n_4g + n_5g + n_6g
+
+d
+
+n_7 <- data.frame(toss=rep("w", 50),
+                  trials=rep(7,50),
+                  success=rep(5,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=n_6$lik) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+n_7
+
+n_7g <- ggplot(n_7, aes(p_water)) + 
+  geom_vline(xintercept=.71, size=1.2, color="darkgoldenrod2", alpha=.4) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W L W W W L W",
+       caption="n=7\nW L W W W L W\nobserved water 71%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_7g
+
+n_1g + n_2g + n_3g + n_4g + n_5g + n_6g + n_7g
+
+d
+
+n_8 <- data.frame(toss=rep("l", 50),
+                  trials=rep(8,50),
+                  success=rep(5,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=n_7$lik) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+n_8
+
+n_8g <- ggplot(n_8, aes(p_water)) + 
+  geom_vline(xintercept=.625, size=1.2, color="darkgoldenrod2", alpha=.4) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W L W W W L W L",
+       caption="n=8\nW L W W W L W L\nobserved water 63%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_8g
+
+n_1g + n_2g + n_3g + n_4g + n_5g + n_6g + n_7g + n_8g
+
+d
+
+n_9 <- data.frame(toss=rep("w", 50),
+                  trials=rep(9,50),
+                  success=rep(6,50),
+                  p_water = seq(0,1,length.out=50),
+                  prior=n_8$lik) %>%
+  mutate(lik_raw = dbinom(success,trials,p_water),
+         lik=lik_raw / sum(lik_raw))
+
+n_9
+
+n_9g <- ggplot(n_9, aes(p_water)) + 
+  geom_vline(xintercept=.67, size=1.2, color="darkgoldenrod2", alpha=.4) + 
+  geom_line(aes(y=prior), size=1.2, color="grey60", linetype="dotdash") +
+  geom_line(aes(y=lik), size=1, color="dodgerblue2") + 
+  scale_x_continuous(breaks=c(.25,.75),
+                     labels=percent) + 
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       #title="W L W W W L W L W",
+       caption="n=9
+       W L W W W L W L W
+       observed water 67%") + 
+  theme(plot.caption = element_text(vjust=10))
+
+n_9g
+
+out <- n_1g + n_2g + n_3g + n_4g + n_5g + n_6g + n_7g + n_8g + n_9g
+
+out
+
+ggsave(out,
+       file="viz/Bayesian updating.png",
+       device="png",
+       type="cairo",
+       height=6,
+       width=8)
+
+```
 
 
 
+```{r remedy001}
 
+set.seed(54)
 
+bin_mod <- data.frame(prior=1,
+                      param = round(seq(0,1,length.out=20),3)) %>%
+  mutate(lik = dbinom(6, 9, param))
 
-## R code 2.2
+bin_mod
+
 dbinom( 6 , size=9 , prob=0.5 )
+
 
 ## R code 2.3
 # define grid
 p_grid <- seq( from=0 , to=1 , length.out=20 )
+p_grid
 
 # define prior
 prior <- rep( 1 , 20 )
+prior
 
 # compute likelihood at each value in grid
 likelihood <- dbinom( 6 , size=9 , prob=p_grid )
 
+likelihood
+
 # compute product of likelihood and prior
 unstd.posterior <- likelihood * prior
 
+unstd.posterior
+
 # standardize the posterior, so it sums to 1
 posterior <- unstd.posterior / sum(unstd.posterior)
+
+
+posterior
 
 ## R code 2.4
 plot( p_grid , posterior , type="b" ,
@@ -196,5 +499,10 @@ curve( dnorm( x , 0.67 , 0.16 ) , lty=2 , add=TRUE )
 ```
 
 ```{r}
-
+ggplot(bin_mod, aes(param, lik)) + 
+  geom_point() +
+  geom_line() +
+  labs(x="",
+       y="",
+       title="")
 ```
