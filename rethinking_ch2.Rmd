@@ -20,8 +20,9 @@ output:
 knitr::opts_chunk$set(fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
 
 library(here)
-
-source(here("../../Dropbox/r prep.R"))
+#getwd()
+#source(here("../../Dropbox/r prep.R"))
+source("prep.R")
 
 ```
 
@@ -436,49 +437,71 @@ set.seed(54)
 
 bin_mod <- data.frame(prior=1,
                       param = round(seq(0,1,length.out=20),3)) %>%
-  mutate(lik = dbinom(6, 9, param))
+  mutate(lik = dbinom(6, 9, param),
+         unstd.posterior = lik*prior,
+         posterior = unstd.posterior / sum(unstd.posterior))
 
 bin_mod
 
-dbinom( 6 , size=9 , prob=0.5 )
+```
 
 
-## R code 2.3
-# define grid
-p_grid <- seq( from=0 , to=1 , length.out=20 )
-p_grid
+```{r}
 
-# define prior
-prior <- rep( 1 , 20 )
-prior
+ggplot(bin_mod, aes(param, posterior)) + 
+  geom_point(color="dodgerblue", size=2) +
+  geom_line(color="dodgerblue", size=1)
 
-# compute likelihood at each value in grid
-likelihood <- dbinom( 6 , size=9 , prob=p_grid )
+```
 
-likelihood
+```{r}
 
-# compute product of likelihood and prior
-unstd.posterior <- likelihood * prior
+bin_mod2 <- data.frame(prior=1,
+                      param = round(seq(0,1,length.out=20),3)) %>%
+  mutate(prior = ifelse(param < 0.5 , 0 , 1),
+         lik = dbinom(6, 9, param),
+         unstd.posterior = lik*prior,
+         posterior = unstd.posterior / sum(unstd.posterior),
+         prev_posterior = bin_mod$posterior)
 
-unstd.posterior
+bin_mod2
 
-# standardize the posterior, so it sums to 1
-posterior <- unstd.posterior / sum(unstd.posterior)
+```
+```{r}
 
+ggplot(bin_mod2, aes(param, posterior)) + 
+  geom_point(color="dodgerblue", size=2) +
+  geom_line(color="dodgerblue", size=1) +
+  geom_line(aes(y=prev_posterior), color="darkgoldenrod2", size=1, linetype="dotdash")
 
-posterior
+```
 
-## R code 2.4
-plot( p_grid , posterior , type="b" ,
-      xlab="probability of water" , ylab="posterior probability" )
-mtext( "20 points" )
+```{r}
 
-## R code 2.5
-prior <- ifelse( p_grid < 0.5 , 0 , 1 )
-prior <- exp( -5*abs( p_grid - 0.5 ) )
+bin_mod3 <- data.frame(prior=1,
+                      param = round(seq(0,1,length.out=20),3)) %>%
+  mutate(prior = exp( -5*abs(param - 0.5)),
+         lik = dbinom(6, 9, param),
+         unstd.posterior = lik*prior,
+         posterior = unstd.posterior / sum(unstd.posterior),
+         prev_posterior = bin_mod2$posterior,
+         prev_posterior2 = bin_mod$posterior)
 
-## R code 2.6
-library(rethinking)
+bin_mod3
+
+```
+```{r}
+
+ggplot(bin_mod3, aes(param, posterior)) + 
+  geom_point(color="dodgerblue", size=2) +
+  geom_line(color="dodgerblue", size=1) +
+  geom_line(aes(y=prev_posterior), color="grey60", size=1, linetype="dotdash") +
+  geom_line(aes(y=prev_posterior2), color="darkgoldenrod2", size=1, linetype="dotdash")
+
+```
+
+```{r}
+
 globe.qa <- map(
      alist(
           w ~ dbinom(9,p) ,  # binomial likelihood
@@ -488,6 +511,15 @@ globe.qa <- map(
 
 # display summary of quadratic approximation
 precis( globe.qa )
+
+```
+
+```{r}
+ggplot()
+```
+
+
+```{r results='asis'}
 
 ## R code 2.7
 # analytical calculation
