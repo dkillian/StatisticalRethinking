@@ -5,13 +5,13 @@ author: "Dan Killian"
 date: "1/13/2022"
 output:
   bookdown::html_document2:
-    number_sections: true
+    number_sections: false
     toc: true
     toc_depth: 3
     toc_float: true
     theme: paper
     fig.caption: true
-    code_folding: hide
+    code_folding: show
     df_print: kable
 ---
 
@@ -26,7 +26,9 @@ source("prep.R")
 
 ```
 
-# Two-way distributions
+Let's start off with an intro section that provides some background to McElreath. 
+
+# Two-way distributions (Kruschke Chapter 4-5)
 
 Let's say we're interested in joint and marginal probabilities of two variables, eye and hair color. Here's a frequency table.
 
@@ -48,7 +50,7 @@ We obtain the marginal probabilities of hair or eye color by summing the joint p
 
 Generalizing this, consider a row variable *r* and column variable *c*. When the variables are continuous rather than discrete, then we take an integral rather than a sum. So, $p(r)=\int{dc\hspace{1mm} p(r,c)}$ and $p(c)=\int{dr\hspace{1mm}p(r,c)}$.
 
-Suppose we know an individual has blue eyes. Conditional on that information, what are the probabilities for hair color? Blue-eyed individuals make up 36 percent of this sample. We divide the set of joint probabilities of blue eyes and each hair color by the marginal probability of blue eyes, we rescale the probabilities to sum to one, where one represents the sub-sample of people with blue eyes. These probabilities of hair color, conditional on blue eye color, can be denoted as $p(h|e=blue)=p(e=blue,h)/p(e=blue)$
+Suppose we know an individual has blue eyes. Conditional on that information, what are the probabilities for hair color? Blue-eyed individuals make up 36 percent of this sample. We divide the set of joint probabilities of blue eyes and each hair color by the marginal probability of blue eyes, we rescale the probabilities to sum to one, where one represents the sub-sample of people with blue eyes. These probabilities of hair color, conditional on blue eye color, can be denoted as $p(h|e=blue)=\frac{p(e=blue,h)}{p(e=blue)}$
 
 ```{r}
 h_blue <- freqs[2,2:5] / freqs[2,6]
@@ -57,19 +59,23 @@ h_blue
 
 ```
 
+Blue-eyed people are most likely to be blond or brunette. 
+
 And these probabilities should sum to one.
 
 ```{r}
 sum(h_blue)
 ```
 
-In general form, we say that $p(h|e)=p(e,h)/p(e)$ which can also be expressed as $p(h|e)=p(e,h)/\sum_hp(e,h*)$, where \_h\*\_ denotes the full set of hair color values to sum over and *e* denotes a specific value of eye color. More generally, we can go back to the row and column variables: $$p(c|r=x)=\frac{p(r=x,c)}{\sum_{c*}{p(r=x,c*)}}$$
+In general form, we say that $p(h|e)=\frac{p(e,h)}{p(e)}$ which can also be expressed as $p(h|e)=\frac{p(e,h)}{\sum_hp(e,h*)}$, where h* denotes the full set of hair color values to sum over and *e* denotes a specific value of eye color. More generally, we can go back to the row and column variables: $$p(c|r=x)=\frac{p(r=x,c)}{\sum_{c*}{p(r=x,c*)}}$$
 
 Or:
 
-$$p(c|r=x)=\frac{p(r=x,c)}{p(r=x)}$$ Or if you can maintain in your head that the conditioned variable takes on a definite value, we have:
+$$p(c|r=x)=\frac{p(r=x,c)}{p(r=x)}$$ 
+Or if you can maintain in your head that the conditioned variable takes on a definite value, we have:
 
-$$p(c|r)=\frac{p(r,c)}{p(r)}$$ Again, just bearing in mind that the variable *r* takes on a specific value.
+$$p(c|r)=\frac{p(r,c)}{p(r)}$$ 
+Again, just bearing in mind that the variable *r* takes on a specific value.
 
 To get to Bayes Rule, multiply both sides of above by $p(r)$. $$p(c|r)p(r)=p(r,c)$$
 
@@ -91,20 +97,27 @@ Now divide by $p(r)$
 $$
 p(c|r)=\frac{p(r|c)p(c)}{p(r)}
 $$
-As a final step, recall that $p(r)$ = 
+And this is Bayes' Theorem. Recall that we can express this as 
 
+$$p(r|c) = \frac{p(r|c)p(c)}{\sum_{c*}(r|c*)p(c*)}$$ 
 
 # 2.1 Garden of forking data
+
+The small world is the self-contained logical world of the model. All possibilities are enumerated and there are no surprises. Bayesian models have reasonable claims to optimality: no alternative model could make better use of the information in the data and support better decisions, assuming the small world is an accurate representation of the large world. 
+
+The large world is the reality in which we deploy a generative model. In the large world, there may be events that were not imagind in the small world. The logical consistency of a model in the small world is no guarantee that it is optimal for the large world. Even correctly specified models will generate data that mimics the reality of the large world, but with error. 
+
+Bayesian models help us understand what happened, only by correctly specifying everything else that could have happened. As we learn about what did happen, we are left with only those possibilities of what could happen that are consistent with what did happen in the data. 
 
 Consider a bag containing four marbles that are either blue or white. We don't know the color of each marble, but we know there could be five possibilities: (1) zero blue, (2) one blue, (3) two blue, (4) three blue, or (5) four blue. Consider each possibility as a conjecture about the actual state of the world. Without evidence, we can only assign equal probabilities to each conjecture, so 20 percent. 
 
 We take a marble from the bag, record its color, return it to the bag, and shake it up. We repeat this until we get three draws. The resulting sequence is blue, white, blue (b,w,b). This is sampling with replacement to produce data that can inform our conjectures. 
 
-Figure 2.2 in the text shows the garden of forking data - the enumeration of all possible paths the marble draws may take to produce the draw that was observed, conditional on each conjecture.
+Figure 2.2 in the text shows the garden of forking data - the enumeration of all possible paths the marble draws may take to produce the draw that was observed, assuming that the bag contains one blue and three white marbles. Figure 2.4 shows the same garden of forking data, for each of the possible conjectures. 
 
 By visually inspecting Figure 2.4, we can count up how many ways the observed draw may arise for each conjecture. For the conjecture of zero blue (1), we can know automatically that the probability is zero. Same for conjecture (5) of four blue. 
 
-For conjecture (2) of one blue, there are three paths through the garden of forking data that produce our observed draw. 
+For conjecture (2) of one blue, there are three paths through the garden of forking data that produce our observed draw.
 
 For conjecture (3) of two blue, there are eight paths through the garden of forking data. 
 
@@ -125,32 +138,63 @@ Or more succintly:
 Once we get the plausibilities of each conjecture, we normalize them in order to generate a set of probabilities. 
 
 ```{r}
-
 ways <- c(0,3,8,9,0)
 
 ways / sum(ways) %>%
   round(3)
-
 ```
 Because we assigned equal prior probabilities to each conjecture, these probabilities are just a rescaling of what we saw from the plausibility counts: conjecture (3) is most favored, but only by a tiny amount over conjecture (2). One might consider how different two conjectures should be, in order to say one conjecture is more likely than another. With this set of probabilities, we'd probably want to say that conjectures (2) and (3) are about equally likely. 
+
+These plausibilities are also probabilities. In model terms, we have
+
+- the parameter p, which is the proportion of blue marbles. It's what we want to know from the model. 
+
+- the likelihood, or relative number of ways that a candidate parameter could produce the observed data. Another way to think of it is to say, "what is the probability of observing the data that we did, for a given candidate parameter value?"
+
+- the prior plausibility of any candidate parameter value. This comes from previously observed data, theory, a principles guess to start from, etc
+
+- the posterior plausability of any candidate parameter value, produced by inputting the prior probability and likelihoods into Bayes' Theorem or the Bayesian engine more generally
+
+> *Randomization*
+> What do we mean when we say a set of data are randomized? It means we have no specific information about the ordering of the data. An ordering about which we know nothing has high information entropy. 
 
 
 # 2.2 Building a model
 
 We made it through our first example! Which was designed to tortuously show you that Bayesian analysis is fundamentally just a counting procedure that arise from our assumptions. Given a set of assumptions, we simply compare what is possible. 
 
-Let's proceed to the second example, which will be more like a real-world example. 
+We start with a set of observed data. 
 
 ```{r}
-n_1 <- data.frame(prior=1,
-                  param=round(seq(0,1,length.out=20),3)) %>%
-  mutate(lik=dbinom(6,9,param))
-
-n_1
-
+d <- tibble(toss=c("w","l","w","w","w","l","w","l","w"))
+frq(d)
 ```
+Six out of nine tosses (67 percent) were water. Under a frequentist paradigm, this is our estimate of the proportion of water on Earth. Under a Bayesian paradigm (and in some respects a generative model more generally) involves the following steps: 
 
-```{r}
+- formulate a narrative about how the data might arise (data story)
+
+- educate your model by feeding it the observed data, and seeing what new data it generates (model updating)
+
+- evaluate your model to see how well it is able to generate the data you observed
+
+The data story behind your model may be descriptive (specifying associations that can be used to predicte outcomes) or causal (a theory of how some events produce other events). Any causal story should also be descriptive, but it's usually unwarranted to interpret any descriptive story causally. 
+
+In the overly simplistic model we currently have, the model goes like this: 
+
+- the true proportion of water covering the globe is p, the parameter we wish to estimate
+
+- a toss of the globe has a probability p of producing water, and 1-p for producing land
+
+- each toss is independent of the other tosses
+
+This story is sufficient to power a probability model that generates data that should mimic the data you've already observed. Ideally, the model of the small world generates data that is similar to the data generating process in the large world. You then use the data generated by the model to make inferences about the data generating process in the real world. 
+
+> *The value of storytelling*
+> Many different stories are consistent with your model. Storytelling remains valuable because in trying to develop your story of the data, the researcher may develop additional questions to help revise the model and distinguish it from other models.
+
+Let's explore a specific part of Bayesian analysis, namely the process of updating our posterior beliefs that arise out of the interaction of our prior beliefs and observed data. For the sequence of tosses described above, we'll look at the Bayesian estimate of the proportion of water on Earth, after each individual observation. 
+
+```{r fig.height=8, fig.width=9}
 n_1 <- data.frame(toss=rep("w", 50),
                   trials=rep(1,50),
                   success=rep(1,50),
@@ -158,11 +202,6 @@ n_1 <- data.frame(toss=rep("w", 50),
                   prior=rep(.02,50)) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-#,         prior2 = prior/sum(prior))
-#sum(n_1$lik_raw) # 10 why?
-
-n_1
 
 n_1g <- ggplot(n_1, aes(p_water)) + 
   geom_vline(xintercept=1, size=1.2, color="darkgoldenrod2", alpha=.3) + 
@@ -177,10 +216,6 @@ n_1g <- ggplot(n_1, aes(p_water)) +
        caption="n=1\nW\nobserved water 100%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_1g
-
-d
-
 n_2 <- data.frame(toss=rep("l", 50),
                   trials=rep(2,50),
                   success=rep(1,50),
@@ -188,8 +223,6 @@ n_2 <- data.frame(toss=rep("l", 50),
                   prior=n_1$lik) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-n_2
 
 n_2g <- ggplot(n_2, aes(p_water)) + 
   geom_vline(xintercept=.5, size=1.2, color="darkgoldenrod2", alpha=.4) + 
@@ -204,13 +237,6 @@ n_2g <- ggplot(n_2, aes(p_water)) +
        caption="n=2\nW L\nobserved water 50%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_2g
-
-library(patchwork)
-n_1g + n_2g
-
-d
-
 n_3 <- data.frame(toss=rep("w", 50),
                   trials=rep(3,50),
                   success=rep(2,50),
@@ -218,8 +244,6 @@ n_3 <- data.frame(toss=rep("w", 50),
                   prior=n_2$lik) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-n_3
 
 n_3g <- ggplot(n_3, aes(p_water)) + 
   geom_vline(xintercept=.67, size=1.2, color="darkgoldenrod2", alpha=.4) + 
@@ -234,14 +258,6 @@ n_3g <- ggplot(n_3, aes(p_water)) +
        caption="n=3\nW L W\nobserved water 67%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_3g
-
-
-n_1g + n_2g + n_3g
-
-
-d
-
 n_4 <- data.frame(toss=rep("w", 50),
                   trials=rep(4,50),
                   success=rep(3,50),
@@ -249,8 +265,6 @@ n_4 <- data.frame(toss=rep("w", 50),
                   prior=n_3$lik) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-n_4
 
 n_4g <- ggplot(n_4, aes(p_water)) + 
   geom_vline(xintercept=.75, size=1.2, color="darkgoldenrod2", alpha=.4) + 
@@ -265,14 +279,6 @@ n_4g <- ggplot(n_4, aes(p_water)) +
        caption="n=4\nW L W W\nobserved water 75%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_4g
-
-
-n_1g + n_2g + n_3g + n_4g
-
-
-d
-
 n_5 <- data.frame(toss=rep("w", 50),
                   trials=rep(5,50),
                   success=rep(4,50),
@@ -280,8 +286,6 @@ n_5 <- data.frame(toss=rep("w", 50),
                   prior=n_4$lik) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-n_5
 
 n_5g <- ggplot(n_5, aes(p_water)) + 
   geom_vline(xintercept=.8, size=1.2, color="darkgoldenrod2", alpha=.4) + 
@@ -296,12 +300,6 @@ n_5g <- ggplot(n_5, aes(p_water)) +
        caption="n=5\nW L W W W\nobserved water 80%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_5g
-
-n_1g + n_2g + n_3g + n_4g + n_5g
-
-d
-
 n_6 <- data.frame(toss=rep("l", 50),
                   trials=rep(6,50),
                   success=rep(4,50),
@@ -309,8 +307,6 @@ n_6 <- data.frame(toss=rep("l", 50),
                   prior=n_5$lik) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-n_6
 
 n_6g <- ggplot(n_6, aes(p_water)) + 
   geom_vline(xintercept=.67, size=1.2, color="darkgoldenrod2", alpha=.4) + 
@@ -325,12 +321,6 @@ n_6g <- ggplot(n_6, aes(p_water)) +
        caption="n=6\nW L W W W L\nobserved water 67%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_6g
-
-n_1g + n_2g + n_3g + n_4g + n_5g + n_6g
-
-d
-
 n_7 <- data.frame(toss=rep("w", 50),
                   trials=rep(7,50),
                   success=rep(5,50),
@@ -338,8 +328,6 @@ n_7 <- data.frame(toss=rep("w", 50),
                   prior=n_6$lik) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-n_7
 
 n_7g <- ggplot(n_7, aes(p_water)) + 
   geom_vline(xintercept=.71, size=1.2, color="darkgoldenrod2", alpha=.4) + 
@@ -354,12 +342,6 @@ n_7g <- ggplot(n_7, aes(p_water)) +
        caption="n=7\nW L W W W L W\nobserved water 71%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_7g
-
-n_1g + n_2g + n_3g + n_4g + n_5g + n_6g + n_7g
-
-d
-
 n_8 <- data.frame(toss=rep("l", 50),
                   trials=rep(8,50),
                   success=rep(5,50),
@@ -367,8 +349,6 @@ n_8 <- data.frame(toss=rep("l", 50),
                   prior=n_7$lik) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-n_8
 
 n_8g <- ggplot(n_8, aes(p_water)) + 
   geom_vline(xintercept=.625, size=1.2, color="darkgoldenrod2", alpha=.4) + 
@@ -383,12 +363,6 @@ n_8g <- ggplot(n_8, aes(p_water)) +
        caption="n=8\nW L W W W L W L\nobserved water 63%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_8g
-
-n_1g + n_2g + n_3g + n_4g + n_5g + n_6g + n_7g + n_8g
-
-d
-
 n_9 <- data.frame(toss=rep("w", 50),
                   trials=rep(9,50),
                   success=rep(6,50),
@@ -396,8 +370,6 @@ n_9 <- data.frame(toss=rep("w", 50),
                   prior=n_8$lik) %>%
   mutate(lik_raw = dbinom(success,trials,p_water),
          lik=lik_raw / sum(lik_raw))
-
-n_9
 
 n_9g <- ggplot(n_9, aes(p_water)) + 
   geom_vline(xintercept=.67, size=1.2, color="darkgoldenrod2", alpha=.4) + 
@@ -414,22 +386,161 @@ n_9g <- ggplot(n_9, aes(p_water)) +
        observed water 67%") + 
   theme(plot.caption = element_text(vjust=10))
 
-n_9g
-
 out <- n_1g + n_2g + n_3g + n_4g + n_5g + n_6g + n_7g + n_8g + n_9g
+
+# ggsave(out,
+#        file="viz/Bayesian updating.png",
+#        device="png",
+#        type="cairo",
+#        height=6,
+#        width=8)
 
 out
 
-ggsave(out,
-       file="viz/Bayesian updating.png",
-       device="png",
-       type="cairo",
-       height=6,
-       width=8)
+```
+In graphs 3-5, each new trial hits water so the prior and posterior get closer to each other. For graphs six and eight, the trials do not land on water, so the prior and posterior get a bit further apart relative to their preceding graphs. 
 
+### 2.2.3 Evaluate the model
+
+Your Bayesian model is the best machinery for learning from the interaction between information and assumptions. And it will give more confident assertions as it is fed more data. Just remember that the model can be both confident and wrong.. the 'truth' of the assertions is conditional on the 'truth' of the model itself. Model performance can be investigated, and different models can be compared against each other. 
+
+## 2.3 Components of the model
+
+Consider what we have counted so far: 
+
+1. The number of ways each conjecture could produce an observation
+2. The accumulated number of ways each ocnjecture could produce the entire data
+3. The initial plausibility of each conjectured cause of the data
+
+To proceed with the Bayesian model, we need a way to specify how likely each observation is, for a candidate parameter value. For example, if we consider that the earth consists of equal parts land and water (p = .5), how likely was it that we observed six observations of water out of nine tosses? In conventional statistics, a distribution function assigned to an observed variable is called the *likelihood*. 
+
+In R, we assign distributions (densities) through the prefix 'd', as in dnorm, dbinom, etc.
+
+```{r remedy002}
+## R code 2.2
+dbinom(6, size=9, prob=0.5 )
 ```
 
+If the true proportion of water was 50 percent, there was a 16.4 percent probability of observing six observations of water out of nine tosses. In McElreath's wording, taking the likelihood of the data (assigning a distribution to the data according to a candidate parameter value) performed the service of counting the relative number of ways to observe the data that we did, at a given value of a candidate parameter value. 
 
+We construct a posterior distribution of plausibilities by mapping the likelihood of the data, conditional on the prior, across a meaningful range of candidate parameter values. 
+
+### 2.3.3 A model is born
+
+So we have observed variables water (W) and land (L), with some probability p of observing water. The distribution function that we assign to these counts (the likelihood) is the binomial distribution.
+
+$$ W \sim Binomial(N, p) $$
+
+Where N is the total number of tosses (L + W). 
+
+The unobserved parameter p is assumed to be anywhere from zero to a hundred with equal probability. So the likelihood we assign to the proportion of water is a uniform distribution. 
+
+$$ p \sim Uniform(0,1) $$
+
+Consider that we know that there is more water on the surface of the earth than land, so p > .5. This would be incorporating substantive prior information into what is known as an informative prior. But for the moment, we'll assume we know absolutely nothing about the proportion of water, so we need to make any value between zero and one as likely as any other value between zero and one. 
+
+### 2.4 Making the model go
+
+We now use Bayes Theorem to power the model. Bayes Theorem interacts your prior plausibilities with the assigned likelihoods to produce a distribution of posterior plausibilities - the *posterior distribution* contains the relative plausibilities of different parameter values, conditional on the data and model. In this example, we'd notate that as Pr(p|W,L). 
+
+For any candidate parameter value p, the joint distribution of W, L, and p is Pr(W,L,p) = Pr(W,L|p)Pr(p).
+
+Narratively: the probability of W, L, p can also be expressed as the subset of W, L for some p, scaled by that p's representation in the data. 
+
+To see this explicitly, let's calculate an example of joint, conditional, and marginal probabilities directly.  
+
+```{r}
+library(palmerpenguins)
+data(penguins)
+
+penguins <- penguins %>%
+  mutate(bill = round(bill_length_mm,-1),
+         bill = case_when(bill_length_mm < 40 ~ 40,
+                          bill_length_mm > 39.999 & bill_length_mm < 45 ~ 45,
+                          bill_length_mm > 44.999 ~ 50))
+
+p <- penguins %>%
+  select(species, bill) %>%
+  na.omit
+head(p)
+```
+
+Get the joint probabilities
+
+```{r}
+joint <- p %>%
+  group_by(species, bill) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(joint=n/sum(n)) %>%
+  select(-3) %>%
+  pivot_wider(names_from=bill,
+              values_from=joint) %>%
+  adorn_totals(where=c("row","col")) %>%
+  rename(spec_marg = Total) 
+
+joint$species[4] <- "bill_marg"
+
+joint
+```
+
+Get conditional frequncies
+
+```{r}
+cond <- p %>%
+  group_by(species) %>%
+  count(bill) %>%
+  mutate(cond_freq = n/sum(n)) %>%
+  select(-3) %>%
+  pivot_wider(names_from=bill,
+              values_from=cond_freq)
+cond
+```
+
+Compare to joint
+
+```{r}
+joint
+```
+
+Pr(bill, species) = Pr(bill|species)p(species)
+
+Pr(bill=45,species=adelie) = p(|bill=45|species=adelie)p(species=adelie) =`r .318*.442`
+
+```{r}
+.318 * .442
+```
+
+Which matches the frequency in the joint table. So we get joint frequencies by multiplying a conditional with a marginal frequency. And we get a conditional frequency by dividing a joint by a marginal frequency. 
+
+Having showed that $$ Pr(W,L,p) = Pr((W,L)|p)Pr(p) $$
+.. note that definitionally we can simply reorder the terms. So: 
+
+$$ Pr(W,L,p) = Pr(p|W,L)Pr(W,L) $$
+
+And since these statements are definitionally equivalent, we can set them next to each other. 
+
+$$ Pr(p|W,L)(Pr(W,L) = Pr(W,L|p)Pr(p) $$
+
+And then solve for the parameter p, given the data we observe: 
+
+$$ Pr(p|W,L) = \frac{Pr(W,L|p)Pr(p)}{Pr(W,L)} $$
+
+And that's Bayes Theorem. 
+
+The terminology here is specific to the example of the proportions of land and water. More generally, we might consider the parameter to be some scientific hypothesis, and data to be the evidence relating to that hypothesis. So Bayes Theorem could then be expressed as: 
+
+$$ Pr(Hypothesis|Evidence) = \frac{Pr(Evidence|Hypothesis)Pr(Hypothesis)}{Pr(Evidence)} $$
+
+The denominator of Bayes Theorem is an integral. Unfortunately, for most analytical problems, the integral has no solution. Instead, there are three common numerical techniques to approximate the integral: 
+
+1. Grid appoximation
+2. Quadratic approximation
+3. Markov Chain Monte Carolo (MCMC) sampling
+
+#### Grid approximation
+
+We'll start of with grid approximation, in which we use a set of finite values to approximate the infinite number of values that are summed in an integral. For a grid of candidate parameter values, and following Bayes Theorem, we multiply the prior probability of a given candidate value with the likelihood of the candidate value given the observed data. 
 
 ```{r remedy001}
 
@@ -441,18 +552,19 @@ bin_mod <- data.frame(prior=1,
          unstd.posterior = lik*prior,
          posterior = unstd.posterior / sum(unstd.posterior))
 
-bin_mod
-
 ```
 
 
 ```{r}
 
 ggplot(bin_mod, aes(param, posterior)) + 
+  geom_vline(xintercept=.67, color="darkgoldenrod2", size=1.2, alpha=.4) +
   geom_point(color="dodgerblue", size=2) +
   geom_line(color="dodgerblue", size=1)
 
 ```
+
+Now let's look at how choice of prior affects the posterior. 
 
 ```{r}
 
@@ -464,17 +576,17 @@ bin_mod2 <- data.frame(prior=1,
          posterior = unstd.posterior / sum(unstd.posterior),
          prev_posterior = bin_mod$posterior)
 
-bin_mod2
-
-```
-```{r}
-
 ggplot(bin_mod2, aes(param, posterior)) + 
+  geom_vline(xintercept=bin_mod2[bin_mod2$posterior==max(bin_mod2$posterior),2],
+             color="darkgoldenrod2", size=1, alpha=.4) +
   geom_point(color="dodgerblue", size=2) +
   geom_line(color="dodgerblue", size=1) +
-  geom_line(aes(y=prev_posterior), color="darkgoldenrod2", size=1, linetype="dotdash")
+  geom_vline(xintercept=.67, color="grey60", size=1, alpha=.4, linetype="dotdash") +
+  geom_line(aes(y=prev_posterior), color="grey60", size=1, linetype="dotdash")
 
 ```
+
+The prior pushed the posterior max a little higher. 
 
 ```{r}
 
@@ -487,11 +599,6 @@ bin_mod3 <- data.frame(prior=1,
          prev_posterior = bin_mod2$posterior,
          prev_posterior2 = bin_mod$posterior)
 
-bin_mod3
-
-```
-```{r}
-
 ggplot(bin_mod3, aes(param, posterior)) + 
   geom_point(color="dodgerblue", size=2) +
   geom_line(color="dodgerblue", size=1) +
@@ -500,41 +607,64 @@ ggplot(bin_mod3, aes(param, posterior)) +
 
 ```
 
-```{r}
+Now the posterior max has been pushed lower. 
 
-globe.qa <- map(
+#### Quadratic approximation
+
+This method imposes a normal distribution over the posterior distribution by taking the posterior max and the curvature immediately surrounding the max. Here's how it works. 
+
+```{r}
+library(rethinking)
+globe.qa <- quap(
      alist(
-          w ~ dbinom(9,p) ,  # binomial likelihood
+          w ~ dbinom(w+l,p) ,  # binomial likelihood
           p ~ dunif(0,1)     # uniform prior
      ) ,
-     data=list(w=6) )
+     data=list(w=6, l=3) )
 
 # display summary of quadratic approximation
 precis( globe.qa )
+```
+The posterior means are the same. What about the standard deviation of the mean? We'll have to wait until we start extracting samples from the posterior distribution. 
+
+How does the quadratic approximation compare to the analytic solution? Let's look.
+
+```{r}
+set.seed(4332)
+
+n_9 <- data.frame(x = rnorm(9, .67,.16))
+
+ggplot(n_9, aes(x)) + 
+  geom_density(color="darkgoldenrod2", size=1, alpha=.4) +
+  geom_function(fun=dbeta, args=list(6,3), color="dodgerblue", size=1, alpha=.4) +
+  scale_x_continuous(limits=c(0,1))
+```
+
+
+```{r}
+set.seed(4332)
+
+n_18 <- data.frame(x = rnorm(18, .67,.16))
+
+ggplot(n_18, aes(x)) + 
+  geom_density(color="darkgoldenrod2", size=1, alpha=.4) +
+  geom_function(fun=dbeta, args=list(6,3), color="dodgerblue", size=1, alpha=.4) +
+  scale_x_continuous(limits=c(0,1))
+
 
 ```
 
 ```{r}
-ggplot()
+set.seed(4332)
+
+n_36 <- data.frame(x = rnorm(36, .67,.16))
+
+ggplot(n_36, aes(x)) + 
+  geom_density(color="darkgoldenrod2", size=1, alpha=.4) +
+  geom_function(fun=dbeta, args=list(6,3), color="dodgerblue", size=1, alpha=.4) +
+  scale_x_continuous(limits=c(0,1))
+
 ```
 
+## 2.6 Practice
 
-```{r results='asis'}
-
-## R code 2.7
-# analytical calculation
-w <- 6
-n <- 9
-curve( dbeta( x , w+1 , n-w+1 ) , from=0 , to=1 )
-# quadratic approximation
-curve( dnorm( x , 0.67 , 0.16 ) , lty=2 , add=TRUE )
-```
-
-```{r}
-ggplot(bin_mod, aes(param, lik)) + 
-  geom_point() +
-  geom_line() +
-  labs(x="",
-       y="",
-       title="")
-```
