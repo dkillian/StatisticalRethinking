@@ -4,8 +4,8 @@ smallBase <- c("arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimat
                "tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix",
                "scales","survey", "srvyr", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr",
                "readxl","labelled", "texreg", "janitor", "sysfonts", "sjmisc",
-               "psych","dplyr", "tidyverse", "tidybayes", "viridis", "here", "ggridges", "ggthemes", "DT",
-               "workflowr", "pointblank", "cmdstanr")
+               "psych","dplyr", "tidybayes", "viridis", "here", "ggridges", "ggthemes", "DT",
+               "workflowr", "pointblank", "cmdstanr", "patchwork", "tidyverse")
 
 
 lapply(smallBase, library, character.only=T)
