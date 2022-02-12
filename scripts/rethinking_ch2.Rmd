@@ -724,22 +724,141 @@ ggplot(n_36, aes(x)) +
 Can we replicate the action of the quadratic approximation through simulation? Let's try. 
 
 ```{r}
-# 
-# out <- data.frame(prior = runif(1e3, 0,1),
-#                   param = runif(1e3, 0,1))
-# ,
-#                   lik = dbinom())
-# 
-# out
-# 
-# globe.qa <- quap(
-#      alist(
-#           w ~ dbinom(w+l,p) ,  # binomial likelihood
-#           p ~ dunif(0,1)     # uniform prior
-#      ) ,
-#      data=list(w=6, l=3) )
+
+out <- data.frame(id=1:10000) %>%
+  mutate(prior = runif(1e4, 0,1), #Pr(p)
+         param = runif(1e4, 0,1), #p
+         #obs = rbinom(1e4,9, param),
+         lik = dbinom(6, 9, param),
+         unstd.post = lik*prior,
+         posterior = unstd.post/sum(unstd.post),
+         model_post = unlist(globe.samp))
+
+head(out)
+str(out)
 
 ```
 
+```{r}
+
+ggplot(out, aes()) + 
+#  geom_density(aes(posterior)) +
+  #geom_density(aes(posterior)) +
+  geom_density(aes(x=model_post))
+  
+  geom_point() + 
+  geom_line() + 
+
+```
+
+I could not simulate it. 
+
 ## 2.6 Practice
+
+### 2M1
+
+Recall the globe tossing model from the chapter. Compute and plot the grid approximate posterior distribution for each of the following sets of observations. In each case, assume a uniform prior for p. 
+
+(1) W,W,W
+
+```{r}
+
+set.seed(54)
+
+mod1_2M1 <- data.frame(prior=1,
+                      param = round(seq(0,1,length.out=20),3)) %>%
+  mutate(lik = dbinom(3, 3, param),
+         unstd.posterior = lik*prior,
+         posterior = unstd.posterior / sum(unstd.posterior))
+
+mod1_2M1
+
+```
+
+
+```{r}
+
+ggplot(mod_2M1, aes(param, posterior)) + 
+  #geom_vline(xintercept=.67, color="darkgoldenrod2", size=1.2, alpha=.4) +
+  geom_point(color="dodgerblue", size=2) +
+  geom_line(color="dodgerblue", size=1)
+
+```
+
+(2) W, W, W, L
+
+```{r remedy001}
+
+set.seed(54)
+
+mod2_2m1 <- data.frame(prior=1,
+                      param = round(seq(0,1,length.out=20),3)) %>%
+  mutate(lik = dbinom(3, 4, param),
+         unstd.posterior = lik*prior,
+         posterior = unstd.posterior / sum(unstd.posterior))
+
+mod2_2m1
+
+```
+
+
+```{r}
+
+ggplot(mod2_2m1, aes(param, posterior)) + 
+  #geom_vline(xintercept=.67, color="darkgoldenrod2", size=1.2, alpha=.4) +
+  geom_point(color="dodgerblue", size=2) +
+  geom_line(color="dodgerblue", size=1)
+
+```
+
+(3) L, W, W, L, W, W, W
+
+```{r remedy001}
+
+set.seed(54)
+
+mod3_2m1 <- data.frame(prior=1,
+                      param = round(seq(0,1,length.out=20),3)) %>%
+  mutate(lik = dbinom(5, 7, param),
+         unstd.posterior = lik*prior,
+         posterior = unstd.posterior / sum(unstd.posterior))
+
+mod3_2m1
+
+```
+
+
+```{r}
+
+ggplot(mod3_2m1, aes(param, posterior)) + 
+  #geom_vline(xintercept=.67, color="darkgoldenrod2", size=1.2, alpha=.4) +
+  geom_point(color="dodgerblue", size=2) +
+  geom_line(color="dodgerblue", size=1)
+
+```
+
+
+### 2M3
+
+Suppose there are two globes, one for Earth and one for Mars. The Earth globe is 70% covered in water. The Mars globe is 100% land. Further suppose that one of these globes-- you don't know which -- was tossed in the air and produced a "land" observation. Assume that each globe was equally likely to be tossed. Show that the posterior probability that the globe was the Earth, conditional on seeing "land" (Pr(Earth|land)), is 23%. 
+
+$$Pr(Earth|land) = \frac{Pr(land|Earth)Pr(Earth)}{Pr(land)}$$
+
+```{r}
+lnd_erth <- .7
+p_erth <- .5
+p_lnd <- 1.7/2
+
+(lnd_erth*p_erth) / p_lnd
+```
+
+
+
+
+
+
+
+
+
+
 
