@@ -123,7 +123,7 @@ For conjecture (3) of two blue, there are eight paths through the garden of fork
 
 For conjecture (5) of three blue, there are nine paths. 
 
-## From counts to probabilities
+## 2.1.3 From counts to probabilities
 
 We multiply the number of ways the observed data could arise against the probability of each conjecture. We'll call the probability of each conjecture the prior probability. With equal probability, the prior has no effect and we call the resulting operation the plausibility. The plausibilities for the set of conjectures are therefore `r c(0,3,8,9,0)`. So three blue becomes our most likely conjecture, but only slightly more likely than the conjecture of two blue. We can call these plausibilities 'likelihoods'. 
 
@@ -191,6 +191,8 @@ This story is sufficient to power a probability model that generates data that s
 
 > *The value of storytelling*
 > Many different stories are consistent with your model. Storytelling remains valuable because in trying to develop your story of the data, the researcher may develop additional questions to help revise the model and distinguish it from other models.
+
+### 2.2.2 Bayesian updating
 
 Let's explore a specific part of Bayesian analysis, namely the process of updating our posterior beliefs that arise out of the interaction of our prior beliefs and observed data. For the sequence of tosses described above, we'll look at the Bayesian estimate of the proportion of water on Earth, after each individual observation. 
 
@@ -398,6 +400,7 @@ out <- n_1g + n_2g + n_3g + n_4g + n_5g + n_6g + n_7g + n_8g + n_9g
 out
 
 ```
+
 In graphs 3-5, each new trial hits water so the prior and posterior get closer to each other. For graphs six and eight, the trials do not land on water, so the prior and posterior get a bit further apart relative to their preceding graphs. 
 
 ### 2.2.3 Evaluate the model
@@ -409,7 +412,7 @@ Your Bayesian model is the best machinery for learning from the interaction betw
 Consider what we have counted so far: 
 
 1. The number of ways each conjecture could produce an observation
-2. The accumulated number of ways each ocnjecture could produce the entire data
+2. The accumulated number of ways each conjecture could produce the entire data
 3. The initial plausibility of each conjectured cause of the data
 
 To proceed with the Bayesian model, we need a way to specify how likely each observation is, for a candidate parameter value. For example, if we consider that the earth consists of equal parts land and water (p = .5), how likely was it that we observed six observations of water out of nine tosses? In conventional statistics, a distribution function assigned to an observed variable is called the *likelihood*. 
@@ -422,6 +425,25 @@ dbinom(6, size=9, prob=0.5 )
 ```
 
 If the true proportion of water was 50 percent, there was a 16.4 percent probability of observing six observations of water out of nine tosses. In McElreath's wording, taking the likelihood of the data (assigning a distribution to the data according to a candidate parameter value) performed the service of counting the relative number of ways to observe the data that we did, at a given value of a candidate parameter value. 
+
+Here is the actual likelihood function for a binomial distribution: 
+
+$$Pr(W,L|p)=\frac{(W+L)!}{(W!L!)}p^W(1-p)^L$$
+Let's replicate the calculation. 
+
+```{r}
+w <- 6
+l <- 3
+n <- w + l
+p <- .5
+num <- factorial(n)
+den <- factorial(w)*factorial(l)
+prob <- p^w*(1-p)^l
+
+( num/den ) * prob 
+
+```
+Exactly!
 
 We construct a posterior distribution of plausibilities by mapping the likelihood of the data, conditional on the prior, across a meaningful range of candidate parameter values. 
 
@@ -513,7 +535,7 @@ Pr(bill=45,species=adelie) = p(|bill=45|species=adelie)p(species=adelie) =`r .31
 
 Which matches the frequency in the joint table. So we get joint frequencies by multiplying a conditional with a marginal frequency. And we get a conditional frequency by dividing a joint by a marginal frequency. 
 
-Having showed that $$ Pr(W,L,p) = Pr((W,L)|p)Pr(p) $$
+Having showed that $$ Pr(W,L,p) = Pr(W,L|p)Pr(p) $$
 .. note that definitionally we can simply reorder the terms. So: 
 
 $$ Pr(W,L,p) = Pr(p|W,L)Pr(W,L) $$
@@ -526,7 +548,7 @@ And then solve for the parameter p, given the data we observe:
 
 $$ Pr(p|W,L) = \frac{Pr(W,L|p)Pr(p)}{Pr(W,L)} $$
 
-And that's Bayes Theorem. 
+And that's Bayes Theorem. Note that $Pr(W,L|p)$ is the likelihood that we explored above. It does the work of counting the possible ways to get a result in the garden of forking data. $Pr(p)$ is our prior probability of the outcome. $Pr(W,L)$ is the average probability of the data, which is nothing more than a scaling factor to transform the posterior into a probability distribution that sums to 1. 
 
 The terminology here is specific to the example of the proportions of land and water. More generally, we might consider the parameter to be some scientific hypothesis, and data to be the evidence relating to that hypothesis. So Bayes Theorem could then be expressed as: 
 
@@ -552,6 +574,8 @@ bin_mod <- data.frame(prior=1,
          unstd.posterior = lik*prior,
          posterior = unstd.posterior / sum(unstd.posterior))
 
+bin_mod
+
 ```
 
 
@@ -576,6 +600,13 @@ bin_mod2 <- data.frame(prior=1,
          posterior = unstd.posterior / sum(unstd.posterior),
          prev_posterior = bin_mod$posterior)
 
+bin_mod2
+
+```
+
+
+```{r}
+
 ggplot(bin_mod2, aes(param, posterior)) + 
   geom_vline(xintercept=bin_mod2[bin_mod2$posterior==max(bin_mod2$posterior),2],
              color="darkgoldenrod2", size=1, alpha=.4) +
@@ -598,6 +629,24 @@ bin_mod3 <- data.frame(prior=1,
          posterior = unstd.posterior / sum(unstd.posterior),
          prev_posterior = bin_mod2$posterior,
          prev_posterior2 = bin_mod$posterior)
+
+bin_mod3
+
+```
+
+What does this prior look like? 
+
+```{r}
+
+ggplot(bin_mod3, aes(param, prior)) + 
+  geom_line()
+
+```
+Looks like this prior has more mass at zero than a normal approximation. 
+
+And the results
+
+```{r}
 
 ggplot(bin_mod3, aes(param, posterior)) + 
   geom_point(color="dodgerblue", size=2) +
@@ -626,6 +675,12 @@ globe.qa <- quap(
 precis( globe.qa )
 ```
 The posterior means are the same. What about the standard deviation of the mean? We'll have to wait until we start extracting samples from the posterior distribution. 
+
+```{r}
+globe.samp <- extract.samples(globe.qa)
+globe.samp
+```
+
 
 How does the quadratic approximation compare to the analytic solution? Let's look.
 
@@ -663,6 +718,26 @@ ggplot(n_36, aes(x)) +
   geom_density(color="darkgoldenrod2", size=1, alpha=.4) +
   geom_function(fun=dbeta, args=list(6,3), color="dodgerblue", size=1, alpha=.4) +
   scale_x_continuous(limits=c(0,1))
+
+```
+
+Can we replicate the action of the quadratic approximation through simulation? Let's try. 
+
+```{r}
+# 
+# out <- data.frame(prior = runif(1e3, 0,1),
+#                   param = runif(1e3, 0,1))
+# ,
+#                   lik = dbinom())
+# 
+# out
+# 
+# globe.qa <- quap(
+#      alist(
+#           w ~ dbinom(w+l,p) ,  # binomial likelihood
+#           p ~ dunif(0,1)     # uniform prior
+#      ) ,
+#      data=list(w=6, l=3) )
 
 ```
 
