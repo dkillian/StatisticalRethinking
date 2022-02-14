@@ -678,7 +678,15 @@ The posterior means are the same. What about the standard deviation of the mean?
 
 ```{r}
 globe.samp <- extract.samples(globe.qa)
-globe.samp
+head(globe.samp)
+```
+
+```{r}
+
+ggplot(globe.samp, aes()) + 
+  geom_density(aes(x=p))
+
+
 ```
 
 
@@ -721,37 +729,7 @@ ggplot(n_36, aes(x)) +
 
 ```
 
-Can we replicate the action of the quadratic approximation through simulation? Let's try. 
 
-```{r}
-
-out <- data.frame(id=1:10000) %>%
-  mutate(prior = runif(1e4, 0,1), #Pr(p)
-         param = runif(1e4, 0,1), #p
-         #obs = rbinom(1e4,9, param),
-         lik = dbinom(6, 9, param),
-         unstd.post = lik*prior,
-         posterior = unstd.post/sum(unstd.post),
-         model_post = unlist(globe.samp))
-
-head(out)
-str(out)
-
-```
-
-```{r}
-
-ggplot(out, aes()) + 
-#  geom_density(aes(posterior)) +
-  #geom_density(aes(posterior)) +
-  geom_density(aes(x=model_post))
-  
-  geom_point() + 
-  geom_line() + 
-
-```
-
-I could not simulate it. 
 
 ## 2.6 Practice
 
@@ -852,6 +830,130 @@ p_lnd <- 1.7/2
 (lnd_erth*p_erth) / p_lnd
 ```
 
+### Homework 2022 (4)
+
+Suppose there is bias in sampling so that Land is more likely than Water to be recorded. Specifically, assume that 1-in-5 (20%) of Water samples are accidentally recorded instead as "Land". First, write a generative simulation of this sampling process. Assuming the true proportion of Water is 70%, what proportion does your simulation tend to produce instead? Second, using a simulated sample of 20 tosses, compute the unbiased posterior distribution of the true proportion of water. 
+
+The true proportion of Water is 70%
+
+```{r}
+
+set.seed(43)
+N <- 1e6
+#trueW <- rbinom(N, 20, .7)
+trueW <- rbinom(N, 1, .7)
+
+mean(trueW)
+
+```
+
+```{r}
+
+obsW <- rep(NA, N)
+
+for(i in 1:length(obsW)) {
+  obsW[i] = ifelse(trueW[i]==1, rbinom(1,1,.8), trueW[i])
+}
+
+mean(obsW)
+
+```
+
+```{r}
+
+#obsW2 <- replicate(N, ifelse(trueW==1, rbinom(1,1,.8), trueW))
+
+#mean(obsW2)
+
+```
+
+Here's how McElreath does it: 
+
+$$P(W|W)=.8$$
+$$P(W|L)=.2$$ - I don't get this one
+$$P(W)=.7*.8$$ - observed, not true
+$$P(W)=.7$$ - true proportion
+
+
+```{r}
+trueW_MC <- rbinom(N, 20, .7) # probability of water
+mean(trueW_MC)/20
+
+obsW_MC <- rbinom(N,trueW_MC, .8) # probability of water, given an initial roll of water
+mean(obsW_MC)/20
+
+obsW_MC2 <- rbinom(N, 20, .8*.7) # same as above in one step
+mean(obsW_MC2) / 20
+```
+
+```{r}
+
+# now analyze
+# Pr(p|W,N) = Pr(W|p,N)Pr(p) / Z
+# Pr(W|N,p) = Pr(W)Pr(W|W)
+
+W <- rbinom(1,size=20,prob=0.7*0.8)
+grid_p <- seq(from=0,to=1,len=100)
+pr_p <- dbeta(grid_p,1,1)
+prW <- dbinom(W,20,grid_p*0.8)
+post <- data.frame(x=prW*pr_p)
+
+ggplot(post, aes(x)) + 
+  geom_density()
+
+
+biased <- data.frame(prior=1,
+                  param=round(seq(0,1,lenth.out=20),3)) %>%
+  mutate(lik=dbinom(W, 20, param),
+         unstd.post = lik*prior,
+         post = unstd.post/sum(unstd.post))
+
+biased
+
+
+```
+
+
+
+
+```{r}
+bin_mod3 <- data.frame(prior=1,
+                      param = round(seq(0,1,length.out=20),3)) %>%
+  mutate(prior = exp( -5*abs(param - 0.5)),
+         lik = dbinom(6, 9, param),
+         unstd.posterior = lik*prior,
+         posterior = unstd.posterior / sum(unstd.posterior),
+         prev_posterior = bin_mod2$posterior,
+         prev_posterior2 = bin_mod$posterior)
+
+bin_mod3
+```
+
+
+```{r}
+
+
+
+
+ifelse(trueW==1, rbinom(1,1,.8), trueW)
+head(obsW)
+rbinom(1,1,.8)
+
+a <- data.frame(a=1:100) %>%
+  mutate(b=rbinom(1,1,.8))
+
+head(a)
+frq(a$b)
+
+out <- data.frame(trueW, obsW)
+
+head(out)
+
+mean(trueW)
+mean(obsW)
+recW <- rbinom(N, 20, .5) 
+  
+```
 
 
 

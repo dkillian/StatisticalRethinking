@@ -1,0 +1,231 @@
+---
+title: "Statistical Rethinking"
+subtitle: "Chapter 3 notes"
+author: "Dan Killian"
+date: "2/13/2022"
+output: 
+  bookdown::html_document2:
+    number_sections: false
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    theme: paper
+    fig.caption: true
+    code_folding: show
+    df_print: kable
+---
+
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+library(here)
+source("prep.R")
+
+```
+
+Consider Bayes Theorem in the context of medical testing. Let there be a medical test that is either positive (+) or negative (-). 
+
+$$Pr(infected|+)=\frac{Pr(+|infected)Pr(infected)}{Pr(+)}$$
+
+Given that we are dealing with a binary outcome, we can rewrite the denominator as the weighted average of positive and negative tests. We'll write this in terms of probabilities. 
+
+$$Pr(infected|+)=\frac{Pr(+|infected)Pr(infected)}{Pr(+|infected)Pr(infected) + Pr(+|not infected)Pr(not infected)}$$
+
+Let's take the following: 
+
+If you test positive, you're infected 95% of the time. 
+If you test positive, you're not infected 1% of the time. 
+0.1% of the population is infected. 
+
+```{r}
+
+Pr_Positive_Infected <- 0.95
+Pr_Positive_NotInfected <- 0.01
+Pr_Infected <- 0.001
+
+Pr_Positive <- Pr_Positive_Infected * Pr_Infected +
+  Pr_Positive_NotInfected * ( 1 - Pr_Infected )
+
+( Pr_Infected_Positive <- Pr_Positive_Infected*Pr_Infected / Pr_Positive )
+
+```
+
+That is all. 
+
+## 3.1 Sampling from a grid-approximate posterior
+
+```{r}
+
+p_grid <- seq( from=0 , to=1 , length.out=1000 )
+prob_p <- rep( 1 , 1000 )
+prob_data <- dbinom( 6 , size=9 , prob=p_grid )
+posterior <- prob_data * prob_p
+posterior <- posterior / sum(posterior)
+
+ggplot(data.frame(p_grid, posterior), aes(p_grid, posterior)) + 
+  geom_line()
+
+```
+Let's do the same thing with samples from the posterior. 
+
+```{r}
+
+## R code 3.3
+samples <- data.frame(x=sample( p_grid , prob=posterior , size=1e4 , replace=TRUE )) %>%
+  rownames_to_column("id")
+
+## R code 3.4
+
+ggplot(samples, aes(id, x)) +
+  geom_hline(yintercept=.67, color="darkblue", size=2, alpha=.7) +
+  geom_point(size=.6, color="dodgerblue", alpha=.6) +
+  theme(axis.ticks.x=element_blank())
+
+```
+
+```{r}
+
+ggplot(samples, aes(x)) + 
+geom_density(color="dodgerblue", size=1.2, fill="lightblue", alpha=.3)
+
+```
+
+# 3.2 Sampling to summarize
+
+Why would we want to draw samples from the posterior distribution? We do this to conduct statistical inference. These could follow three main themes: (1) intervals of defined boundaries, and (2) questions about intervals of defined probability mass, and (3) questions about point estimates. 
+
+### 3.2.1 Intervals of defined boundaries
+
+What's the probability that the proportion of water on Earth is less than 50%?
+
+
+Recall that the posterior is a probability distribution that sums to 1, so we can simply add up the posterior values along the grid that are less than 50%. 
+
+```{r}
+## R code 3.6
+# add up posterior probability where p < 0.5
+sum( posterior[ p_grid < 0.5 ] )
+
+```
+More intuitive is to work with a sample of parameter estimates, which we interpret as representing the true probability distribution. So we simply look at what proportion of estimates are less than 50%, from the entire distribution of parameter estimates. 
+
+```{r}
+## R code 3.7
+sum( samples < 0.5 ) / 1e4
+
+```
+What proportion of estimates are between 50 and 75 percent? 
+
+```{r}
+## R code 3.8
+sum( samples > 0.5 & samples < 0.75 ) / 1e4
+```
+# 3.2.2 Intervals of defined mass
+
+Let's look at the range and endpoints defined by the probability mass, rather than a pre-defined interval of unknown mass. 
+
+What are the boundaries of the lower 80% of the posterior distribution? 
+
+```{r}
+## R code 3.9
+quantile( samples$x , 0.8 )
+
+```
+
+What interval defines the middle 80% of the posterior probability mass? 
+
+```{r}
+
+## R code 3.10
+quantile( samples[,2] , c( 0.1 , 0.9 ) )
+
+```
+These intervals assign equal mass to each side, which doesn't work as well for assymetric distributions. 
+
+```{r}
+## R code 3.11
+p_grid <- seq( from=0 , to=1 , length.out=1000 )
+prior <- rep(1,1000)
+likelihood <- dbinom( 3 , size=3 , prob=p_grid )
+posterior <- likelihood * prior
+posterior <- posterior / sum(posterior)
+samples <- data.frame(x = sample( p_grid , size=1e4 , replace=TRUE , prob=posterior ))
+
+## R code 3.12
+PI( samples , prob=0.5 )
+
+## R code 3.13
+HPDI( samples , prob=0.5 )
+
+## R code 3.14
+p_grid[ which.max(posterior) ]
+
+## R code 3.15
+chainmode( samples , adj=0.01 )
+
+## R code 3.16
+mean( samples )
+median( samples )
+
+## R code 3.17
+sum( posterior*abs( 0.5 - p_grid ) )
+
+## R code 3.18
+loss <- sapply( p_grid , function(d) sum( posterior*abs( d - p_grid ) ) )
+
+## R code 3.19
+p_grid[ which.min(loss) ]
+
+## R code 3.20
+dbinom( 0:2 , size=2 , prob=0.7 )
+
+## R code 3.21
+rbinom( 1 , size=2 , prob=0.7 )
+
+## R code 3.22
+rbinom( 10 , size=2 , prob=0.7 )
+
+## R code 3.23
+dummy_w <- rbinom( 1e5 , size=2 , prob=0.7 )
+table(dummy_w)/1e5
+
+## R code 3.24
+dummy_w <- rbinom( 1e5 , size=9 , prob=0.7 )
+simplehist( dummy_w , xlab="dummy water count" )
+
+## R code 3.25
+w <- rbinom( 1e4 , size=9 , prob=0.6 )
+
+## R code 3.26
+w <- rbinom( 1e4 , size=9 , prob=samples )
+
+## R code 3.27
+p_grid <- seq( from=0 , to=1 , length.out=1000 )
+prior <- rep( 1 , 1000 )
+likelihood <- dbinom( 6 , size=9 , prob=p_grid )
+posterior <- likelihood * prior
+posterior <- posterior / sum(posterior)
+set.seed(100)
+samples <- sample( p_grid , prob=posterior , size=1e4 , replace=TRUE )
+
+## R code 3.28
+birth1 <- c(1,0,0,0,1,1,0,1,0,1,0,0,1,1,0,1,1,0,0,0,1,0,0,0,1,0,
+            0,0,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,0,1,0,0,1,1,0,1,0,0,0,0,0,0,0,
+            1,1,0,1,0,0,1,0,0,0,1,0,0,1,1,1,1,0,1,0,1,1,1,1,1,0,0,1,0,1,1,0,
+            1,0,1,1,1,0,1,1,1,1)
+birth2 <- c(0,1,0,1,0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,0,0,1,1,1,0,
+            1,1,1,0,1,1,1,0,1,0,0,1,1,1,1,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,
+            1,1,1,0,1,1,0,1,1,0,1,1,1,0,0,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0,1,1,
+            0,0,0,1,1,1,0,0,0,0)
+
+## R code 3.29
+library(rethinking)
+data(homeworkch3)
+
+## R code 3.30
+sum(birth1) + sum(birth2)
+
+```
+
