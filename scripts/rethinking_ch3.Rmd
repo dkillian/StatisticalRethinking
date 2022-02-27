@@ -31,7 +31,7 @@ $$Pr(infected|+)=\frac{Pr(+|infected)Pr(infected)}{Pr(+)}$$
 
 Given that we are dealing with a binary outcome, we can rewrite the denominator as the weighted average of positive and negative tests. We'll write this in terms of probabilities. 
 
-$$Pr(infected|+)=\frac{Pr(+|infected)Pr(infected)}{Pr(+|infected)Pr(infected) + Pr(+|not infected)Pr(not infected)}$$
+$$Pr(infected|+)=\frac{Pr(+|infected)Pr(infected)}{Pr(+|infected)Pr(infected) + Pr(+|uninfected)Pr(uninfected)}$$
 
 Let's take the following: 
 
@@ -146,6 +146,7 @@ These intervals assign equal mass to each side, which doesn't work as well for a
 
 ```{r}
 ## R code 3.11
+set.seed(43)
 p_grid <- seq( from=0 , to=1 , length.out=1000 )
 prior <- rep(1,1000)
 likelihood <- dbinom( 3 , size=3 , prob=p_grid )
@@ -155,6 +156,10 @@ samples <- data.frame(x = sample( p_grid , size=1e4 , replace=TRUE , prob=poster
 
 ## R code 3.12
 PI( samples , prob=0.5 )
+
+```
+
+
 
 ## R code 3.13
 HPDI( samples , prob=0.5 )
