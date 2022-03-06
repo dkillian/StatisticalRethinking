@@ -20,7 +20,7 @@ output:
 knitr::opts_chunk$set(fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
 
 library(here)
-#getwd()
+getwd()
 #source(here("../../Dropbox/r prep.R"))
 source("prep.R")
 
@@ -419,7 +419,7 @@ To proceed with the Bayesian model, we need a way to specify how likely each obs
 
 In R, we assign distributions (densities) through the prefix 'd', as in dnorm, dbinom, etc.
 
-```{r remedy002}
+```{r}
 ## R code 2.2
 dbinom(6, size=9, prob=0.5 )
 ```
@@ -564,7 +564,7 @@ The denominator of Bayes Theorem is an integral. Unfortunately, for most analyti
 
 We'll start of with grid approximation, in which we use a set of finite values to approximate the infinite number of values that are summed in an integral. For a grid of candidate parameter values, and following Bayes Theorem, we multiply the prior probability of a given candidate value with the likelihood of the candidate value given the observed data. 
 
-```{r remedy001}
+```{r}
 
 set.seed(54)
 
@@ -756,7 +756,7 @@ mod1_2M1
 
 ```{r}
 
-ggplot(mod_2M1, aes(param, posterior)) + 
+ggplot(mod1_2M1, aes(param, posterior)) + 
   #geom_vline(xintercept=.67, color="darkgoldenrod2", size=1.2, alpha=.4) +
   geom_point(color="dodgerblue", size=2) +
   geom_line(color="dodgerblue", size=1)
@@ -765,7 +765,7 @@ ggplot(mod_2M1, aes(param, posterior)) +
 
 (2) W, W, W, L
 
-```{r remedy001}
+```{r}
 
 set.seed(54)
 
@@ -791,7 +791,7 @@ ggplot(mod2_2m1, aes(param, posterior)) +
 
 (3) L, W, W, L, W, W, W
 
-```{r remedy001}
+```{r}
 
 set.seed(54)
 
@@ -823,9 +823,10 @@ Suppose there are two globes, one for Earth and one for Mars. The Earth globe is
 $$Pr(Earth|land) = \frac{Pr(land|Earth)Pr(Earth)}{Pr(land)}$$
 
 ```{r}
-lnd_erth <- .7
+lnd_erth <- .3
 p_erth <- .5
-p_lnd <- 1.7/2
+p_lnd <- 1.3/2
+.3*.5 + 1*.5
 
 (lnd_erth*p_erth) / p_lnd
 ```
@@ -935,7 +936,7 @@ bin_mod3
 
 
 
-ifelse(trueW==1, rbinom(1,1,.8), trueW)
+tes <- ifelse(trueW==1, rbinom(1,1,.8), trueW)
 head(obsW)
 rbinom(1,1,.8)
 
