@@ -1,0 +1,126 @@
+---
+title: "Statistical Rethinking"
+subtitle: "Chapter 13 notes 2022"
+author: "Dan Killian"
+toc: true
+toc-depth: 3
+number-sections: true
+format:
+  html:
+    code-fold: true
+execute: 
+  keep-md: true
+project: 
+  execute-dir: project
+editor: visual
+---
+
+```{r}
+
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+library(here)
+source(here("scripts/prep.R"))
+
+```
+
+# Multilevel tadpoles
+
+```{r}
+data(reedfrogs)
+d <- reedfrogs
+rm(reedfrogs)
+str(d)
+```
+
+```{r}
+head(d)
+```
+
+Each row is a tank. We have number of fish in the tank (density), which is independent of the size of the tank (big or small). Some tanks have predators some do not. While density, size, and predation are experimentally manipulated, there may also be unmeasured variation across tanks which is not measured. The outcome is survival.
+
+```{r}
+lapply(d[,1:3], frq)
+```
+
+```{r}
+table(d$density, d$size)
+```
+
+The text says that each row is a tank, but also that there are repeated measures on each tank. But I don't see the repeated measures - I see 48 tanks with a single measure of survival.
+
+At any rate, a directed acyclic graph (DAG) of our data could be:
+
+```{r}
+library(dagitty)
+library(ggdag)
+
+dat <- dagify(Survival ~ Predation,
+              Survival ~ Size,
+              Survival ~ Density,
+              Survival ~ Tank)
+plot(dat)
+```
+
+If we assign the same baseline level of survival to all tanks (a single intercept in a regression model), we may miss important variation in baseline levels of survival across tank. The statistical term for this is underfitting the data. If we treat each tank as a separate estimate of baseline survival (an intercept for each tank, or a fixed effects model), we are not allowing the similarities across tanks to contribute the estimate of the overall baseline level of survival. We are at risk of overfitting the data.
+
+We will proceed with the simplest version of a multilevel model, the varying intercepts model.
+
+$S_i \sim Binomial(N_i,p)$
+
+$logit(p_i)=\alpha_{TANK[i]}$
+
+$\alpha_j\sim Normal(0,1.5)$
+
+If survival is modeled as a binomial distribution with probability N and chance of survival p, then we model this with the logistic equation where $p_i$ is the log-odds of survival for each tank. We also have an intercept for each tank, $\alpha_j$, which is adaptively learned from the data.
+
+```{r}
+
+d <- d %>%
+  mutate(tank=1:48)
+
+dat <- list(
+  S = d$surv,
+  N = d$density,
+  tank = d$tank
+)
+
+m13.1 <- ulam(
+  alist(
+    S ~ dbinom(N,p),
+    logit(p) <- a[tank],
+    a[tank] ~ dnorm(0,1.5)
+  ),
+  data=dat, 
+  chains=4, 
+  log_lik=T,
+  cmdstan = T,
+  cores=8,
+  iter=2000
+)
+
+```
+
+```{r}
+precis(m13.1, depth=2)
+```
+
+```{r}
+
+b1 <- brm(surv ~ 1|tank,
+          family="binomial",
+          data=d,
+          backend="cmdstanr",
+          chains=4,
+          iter=2000,
+          cores=8)
+
+```
+
+```{r}
+
+summary(b1)
+
+ranef(b1)
+
+```
