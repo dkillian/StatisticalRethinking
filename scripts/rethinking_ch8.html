@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Chapter 8 notes">
+<meta name="dcterms.date" content="2022-04-10">
+
+<title>Statistical Rethinking</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="rethinking_ch8_files/libs/clipboard/clipboard.min.js"></script>
+<script src="rethinking_ch8_files/libs/quarto-html/quarto.js"></script>
+<script src="rethinking_ch8_files/libs/quarto-html/popper.min.js"></script>
+<script src="rethinking_ch8_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="rethinking_ch8_files/libs/quarto-html/anchor.min.js"></script>
+<link href="rethinking_ch8_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="rethinking_ch8_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="rethinking_ch8_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="rethinking_ch8_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="rethinking_ch8_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Statistical Rethinking</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Chapter 8 notes </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 10, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard figure size and generate clean output</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">fig.height=</span><span class="dv">4</span>, <span class="at">fig.width=</span><span class="dv">6</span>, <span class="at">warning=</span><span class="cn">FALSE</span>, <span class="at">message=</span><span class="cn">FALSE</span>, <span class="at">cache=</span><span class="cn">TRUE</span>, <span class="at">error=</span>T, <span class="at">echo=</span>T)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at C:/Users/dan.killian/Documents/StatisticalRethinking</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"scripts/prep.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'arm' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: MASS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'MASS' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Matrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'Matrix' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lme4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lme4' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+arm (Version 1.13-1, built: 2022-8-25)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Working directory is C:/Users/dan.killian/Documents/StatisticalRethinking/scripts</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'BMA' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: survival</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: leaps</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: robustbase</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'robustbase' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'robustbase'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:survival':
+
+    heart</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: inline</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: rrcov</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'rrcov' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Scalable Robust Estimators with High Breakdown Point (version 1.6-2)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rrcov'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:lme4':
+
+    getData, isSingular</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'brms' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Rcpp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'Rcpp' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'Rcpp'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:inline':
+
+    registerPlugin</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading 'brms' package (version 2.18.0). Useful instructions
+can be found by typing help('brms'). A more detailed introduction
+to the package is available through vignette('brms_overview').</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'brms'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:robustbase':
+
+    epilepsy</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:survival':
+
+    kidney</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:lme4':
+
+    ngrps</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    ar</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'corrplot' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>corrplot 0.92 loaded</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'corrplot'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:arm':
+
+    corrplot</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>dummies-1.5.6 provided by Decision Patterns</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dummies'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:lme4':
+
+    dummy</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'DescTools' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'DescTools'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:rrcov':
+
+    Cov</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'estimatr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'extrafont' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registering fonts with R</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'forestplot' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: grid</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: checkmate</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'checkmate' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: abind</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'janitor'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    chisq.test, fisher.test</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'memisc' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lattice' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'memisc'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:DescTools':
+
+    %nin%, Cor, Cov, Mean, Median, Range, Var</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:rrcov':
+
+    Cov</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:Matrix':
+
+    as.array</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    contr.sum, contr.treatment, contrasts</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:base':
+
+    as.array</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: rstan</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'rstan' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: StanHeaders</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'ggplot2'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:memisc':
+
+    syms</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>rstan (Version 2.21.7, GitRev: 2e1f913d3ca3)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>For execution on a local, multicore CPU with excess RAM we recommend calling
+options(mc.cores = parallel::detectCores()).
+To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Do not specify '-march=native' in 'LOCAL_CPPFLAGS' or a Makevars file</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rstan'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:arm':
+
+    traceplot</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: parallel</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>rethinking (Version 2.13)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rethinking'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:brms':
+
+    LOO, stancode, WAIC</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:arm':
+
+    logit, sim, standardize</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    rstudent</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'tidyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:rstan':
+
+    extract</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:reshape2':
+
+    smiths</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:Matrix':
+
+    expand, pack, unpack</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'broom' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'haven' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'HH' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: latticeExtra</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'latticeExtra' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'latticeExtra'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
+
+    layer</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: multcomp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'multcomp' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: mvtnorm</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: TH.data</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'TH.data' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'TH.data'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:MASS':
+
+    geyser</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: gridExtra</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'HH'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:rethinking':
+
+    logit</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:DescTools':
+
+    OddsRatio</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:brms':
+
+    mmc</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:arm':
+
+    logit</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'Hmisc' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Formula</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'Hmisc'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:memisc':
+
+    %nin%, html, Mean</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:DescTools':
+
+    %nin%, Label, Mean, Quantile</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    format.pval, units</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lubridate' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'lubridate'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:HH':
+
+    interval</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:memisc':
+
+    as.interval, is.interval</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    date, intersect, setdiff, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'knitr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'margins'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:brms':
+
+    marginal_effects</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'magrittr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'magrittr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    extract</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:rstan':
+
+    extract</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'plotrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:arm':
+
+    rescale</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'scales' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'scales'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:plotrix':
+
+    rescale</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:memisc':
+
+    percent</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:arm':
+
+    rescale</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'survey'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:Hmisc':
+
+    deff</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:graphics':
+
+    dotchart</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'srvyr' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'srvyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:Hmisc':
+
+    summarize</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:memisc':
+
+    collect, rename, syms</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:MASS':
+
+    select</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'foreign' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'car' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'carData' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'car'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:HH':
+
+    logit, vif</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:rethinking':
+
+    logit</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:memisc':
+
+    recode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:DescTools':
+
+    Recode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:arm':
+
+    logit</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ICC' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'openxlsx' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'readr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:scales':
+
+    col_factor</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readxl' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'labelled' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'texreg' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Version:  1.38.5
+Date:     2022-03-03
+Author:   Philip Leifeld (University of Essex)
+
+Consider submitting praise using the praise or praise_interactive functions.
+Please cite the JSS article in your publications -- see citation("texreg").</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'texreg'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:magrittr':
+
+    extract</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    extract</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:rstan':
+
+    extract</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'sjmisc' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'sjmisc'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:labelled':
+
+    to_character, to_factor</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:Hmisc':
+
+    %nin%</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    replace_na</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:memisc':
+
+    %nin%</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:janitor':
+
+    remove_empty_cols, remove_empty_rows</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:DescTools':
+
+    %nin%</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'psych' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'psych'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:car':
+
+    logit</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:scales':
+
+    alpha, rescale</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:plotrix':
+
+    rescale</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:Hmisc':
+
+    describe</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:HH':
+
+    logit</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:rethinking':
+
+    logistic, logit, sim</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:rstan':
+
+    lookup</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:ggplot2':
+
+    %+%, alpha</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:DescTools':
+
+    AUC, ICC, SD</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:brms':
+
+    cs</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:arm':
+
+    logit, rescale, sim</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:car':
+
+    recode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:Hmisc':
+
+    src, summarize</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:gridExtra':
+
+    combine</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:memisc':
+
+    collect, recode, rename, syms</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:MASS':
+
+    select</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidybayes' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'tidybayes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:DescTools':
+
+    Mode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:brms':
+
+    dstudent_t, pstudent_t, qstudent_t, rstudent_t</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'viridis' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: viridisLite</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'viridisLite' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'viridis'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:scales':
+
+    viridis_pal</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggridges' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'ggridges'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:tidybayes':
+
+    scale_point_color_continuous, scale_point_color_discrete,
+    scale_point_colour_continuous, scale_point_colour_discrete,
+    scale_point_fill_continuous, scale_point_fill_discrete,
+    scale_point_size_continuous</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'DT' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'workflowr' was built under R version 4.1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is workflowr version 1.7.0
+Run ?workflowr for help getting started</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'pointblank' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'cmdstanr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is cmdstanr version 0.5.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStan path: C:/Users/dan.killian/Documents/.cmdstan/cmdstan-2.30.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStan version: 2.30.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+A newer version of CmdStan is available. See ?install_cmdstan() to install it.
+To disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'patchwork' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'patchwork'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:MASS':
+
+    area</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Found more than one class "atomicVector" in cache; using the first, from namespace 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Also defined by 'Rmpfr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>-- Attaching packages --------------------------------------- tidyverse 1.3.2 --
+v tibble  3.1.8     v stringr 1.4.1
+v purrr   0.3.5     v forcats 0.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tibble' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'purrr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'stringr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'forcats' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x purrr::%@%()             masks memisc::%@%()
+x psych::%+%()             masks ggplot2::%+%()
+x tibble::add_case()       masks sjmisc::add_case()
+x psych::alpha()           masks scales::alpha(), ggplot2::alpha()
+x lubridate::as.difftime() masks base::as.difftime()
+x lubridate::as.interval() masks memisc::as.interval()
+x readr::col_factor()      masks scales::col_factor()
+x dplyr::collect()         masks srvyr::collect(), memisc::collect()
+x dplyr::combine()         masks gridExtra::combine()
+x lubridate::date()        masks base::date()
+x purrr::discard()         masks scales::discard()
+x tidyr::expand()          masks Matrix::expand()
+x texreg::extract()        masks magrittr::extract(), tidyr::extract(), rstan::extract()
+x dplyr::filter()          masks srvyr::filter(), stats::filter()
+x lubridate::intersect()   masks base::intersect()
+x lubridate::interval()    masks HH::interval()
+x lubridate::is.interval() masks memisc::is.interval()
+x purrr::is_empty()        masks sjmisc::is_empty()
+x dplyr::lag()             masks stats::lag()
+x latticeExtra::layer()    masks ggplot2::layer()
+x purrr::map()             masks rethinking::map()
+x tidyr::pack()            masks Matrix::pack()
+x dplyr::recode()          masks car::recode(), memisc::recode()
+x dplyr::rename()          masks srvyr::rename(), memisc::rename()
+x sjmisc::replace_na()     masks tidyr::replace_na()
+x dplyr::select()          masks srvyr::select(), MASS::select()
+x purrr::set_names()       masks magrittr::set_names()
+x lubridate::setdiff()     masks base::setdiff()
+x purrr::some()            masks car::some()
+x dplyr::src()             masks Hmisc::src()
+x dplyr::summarize()       masks srvyr::summarize(), Hmisc::summarize()
+x dplyr::syms()            masks srvyr::syms(), ggplot2::syms(), memisc::syms()
+x purrr::transpose()       masks HH::transpose()
+x lubridate::union()       masks base::union()
+x tidyr::unpack()          masks Matrix::unpack()
+x tibble::view()           masks memisc::view()</code></pre>
+</div>
+</div>
+<section id="conditional-manatees" class="level1">
+<h1>Conditional Manatees</h1>
+<section id="building-an-interaction" class="level2">
+<h2 class="anchored" data-anchor-id="building-an-interaction">Building an interaction</h2>
+<p>Let’s look at the relationship between terrain ruggedness and economic performance. Generally speaking, one might think that the less rugged the terrain, the easier it is to conduct economic activity and therefore the greater economic performance of a country.</p>
+<p>To examine this relationship, we’ll look at terrain ruggedness, measured as the meters of elevation difference per grid point, and the log of country GDP in the year 2000.</p>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-2_ed6882f2e6c4fa1356cd0a997e69ad71">
+<div class="sourceCode cell-code" id="cb252"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.1 </span></span>
+<span id="cb252-2"><a href="#cb252-2" aria-hidden="true" tabindex="-1"></a><span class="do">## prepare data</span></span>
+<span id="cb252-3"><a href="#cb252-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rugged)</span>
+<span id="cb252-4"><a href="#cb252-4" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> rugged <span class="sc">%&gt;%</span></span>
+<span id="cb252-5"><a href="#cb252-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">complete.cases</span>(rgdppc_2000))</span>
+<span id="cb252-6"><a href="#cb252-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-7"><a href="#cb252-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rugged)</span>
+<span id="cb252-8"><a href="#cb252-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-9"><a href="#cb252-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-10"><a href="#cb252-10" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb252-11"><a href="#cb252-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_gdp =</span> <span class="fu">log</span>(d<span class="sc">$</span>rgdppc_2000), <span class="co"># make log version of outcome</span></span>
+<span id="cb252-12"><a href="#cb252-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">log_gdp_std =</span> log_gdp <span class="sc">/</span> <span class="fu">mean</span>(log_gdp), <span class="co"># text  (proportion of mean)</span></span>
+<span id="cb252-13"><a href="#cb252-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">log_gdp_sc =</span> <span class="fu">scale</span>(log_gdp), <span class="co"># mean 0 sd 1</span></span>
+<span id="cb252-14"><a href="#cb252-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">rugged_std =</span> rugged <span class="sc">/</span> <span class="fu">max</span>(rugged), <span class="co"># text version (0-1)</span></span>
+<span id="cb252-15"><a href="#cb252-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">rugged_sc =</span> <span class="fu">scale</span>(rugged)) <span class="co"># mean 0 sd 1</span></span>
+<span id="cb252-16"><a href="#cb252-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-17"><a href="#cb252-17" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   170 obs. of  56 variables:
+ $ isocode               : Factor w/ 234 levels "ABW","AFG","AGO",..: 3 5 8 9 10 12 13 14 15 16 ...
+ $ isonum                : int  24 8 784 32 51 28 36 40 31 108 ...
+ $ country               : Factor w/ 234 levels "Afghanistan",..: 6 2 219 9 10 8 12 13 14 34 ...
+ $ rugged                : num  0.858 3.427 0.769 0.775 2.688 ...
+ $ rugged_popw           : num  0.714 1.597 0.316 0.22 0.934 ...
+ $ rugged_slope          : num  2.27 10.45 2.11 2.27 8.18 ...
+ $ rugged_lsd            : num  0.228 1.006 0.191 0.226 0.799 ...
+ $ rugged_pc             : num  4.91 62.13 6.14 9.41 50.56 ...
+ $ land_area             : num  124670 2740 8360 273669 2820 ...
+ $ lat                   : num  -12.3 41.1 23.9 -35.4 40.3 ...
+ $ lon                   : num  17.6 20.1 54.3 -65.2 44.9 ...
+ $ soil                  : num  26.7 68.1 0 35.7 30.1 ...
+ $ desert                : num  0.425 0 77.28 0 0 ...
+ $ tropical              : num  44.3 0 0 0 0 ...
+ $ dist_coast            : num  0.428 0.048 0.065 0.352 0.348 0.001 0.336 0.242 0.584 0.906 ...
+ $ near_coast            : num  13.2 94.7 75.7 13 0 ...
+ $ gemstones             : int  47756 0 0 0 0 0 264154 0 0 0 ...
+ $ rgdppc_2000           : num  1795 3703 20604 12174 2422 ...
+ $ rgdppc_1950_m         : num  1052 1001 15798 4987 NA ...
+ $ rgdppc_1975_m         : num  1073 2289 25465 8122 NA ...
+ $ rgdppc_2000_m         : num  765 2741 17568 8544 4565 ...
+ $ rgdppc_1950_2000_m    : num  1107 1932 20120 6927 NA ...
+ $ q_rule_law            : num  -1.567 -0.82 0.913 0.033 -0.453 ...
+ $ cont_africa           : int  1 0 0 0 0 0 0 0 0 1 ...
+ $ cont_asia             : int  0 0 1 0 1 0 0 0 1 0 ...
+ $ cont_europe           : int  0 1 0 0 0 0 0 1 0 0 ...
+ $ cont_oceania          : int  0 0 0 0 0 0 1 0 0 0 ...
+ $ cont_north_america    : int  0 0 0 0 0 1 0 0 0 0 ...
+ $ cont_south_america    : int  0 0 0 1 0 0 0 0 0 0 ...
+ $ legor_gbr             : int  0 0 1 0 0 1 1 0 0 0 ...
+ $ legor_fra             : int  1 0 0 1 0 0 0 0 0 1 ...
+ $ legor_soc             : int  0 1 0 0 1 0 0 0 1 0 ...
+ $ legor_deu             : int  0 0 0 0 0 0 0 1 0 0 ...
+ $ legor_sca             : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ colony_esp            : int  0 0 0 1 0 0 0 0 0 0 ...
+ $ colony_gbr            : int  0 0 1 0 0 1 1 0 0 0 ...
+ $ colony_fra            : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ colony_prt            : int  1 0 0 0 0 0 0 0 0 0 ...
+ $ colony_oeu            : int  0 0 0 0 0 0 0 0 0 1 ...
+ $ africa_region_n       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ africa_region_s       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ africa_region_w       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ africa_region_e       : int  0 0 0 0 0 0 0 0 0 1 ...
+ $ africa_region_c       : int  1 0 0 0 0 0 0 0 0 0 ...
+ $ slave_exports         : num  3610000 0 0 0 0 ...
+ $ dist_slavemkt_atlantic: num  5.67 NA NA NA NA ...
+ $ dist_slavemkt_indian  : num  6.98 NA NA NA NA ...
+ $ dist_slavemkt_saharan : num  4.93 NA NA NA NA ...
+ $ dist_slavemkt_redsea  : num  3.87 NA NA NA NA ...
+ $ pop_1400              : int  1223208 200000 19200 276632 105743 747 200000 1250000 226250 239693 ...
+ $ european_descent      : num  2 100 0 89.9 0.5 ...
+ $ log_gdp               : num  7.49 8.22 9.93 9.41 7.79 ...
+ $ log_gdp_std           : num  0.88 0.965 1.166 1.104 0.915 ...
+ $ log_gdp_sc            : num [1:170, 1] -0.878 -0.257 1.214 0.763 -0.621 ...
+  ..- attr(*, "scaled:center")= num 8.52
+  ..- attr(*, "scaled:scale")= num 1.17
+ $ rugged_std            : num  0.138 0.553 0.124 0.125 0.433 ...
+ $ rugged_sc             : num [1:170, 1] -0.407 1.792 -0.483 -0.478 1.159 ...
+  ..- attr(*, "scaled:center")= num 1.33
+  ..- attr(*, "scaled:scale")= num 1.17</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-3_304617d258b406574d891f1174fc318c">
+<div class="sourceCode cell-code" id="cb254"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb254-1"><a href="#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(rugged_std, log_gdp_std)) <span class="sc">+</span> </span>
+<span id="cb254-2"><a href="#cb254-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb254-3"><a href="#cb254-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rethinking_ch8_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>No relationship. Let’s look at Africa.</p>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-4_8c3904ae8a42826a673dedb375dc0efa">
+<div class="sourceCode cell-code" id="cb255"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb255-1"><a href="#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(rugged_std, log_gdp_std, <span class="at">color=</span><span class="fu">as.factor</span>(cont_africa))) <span class="sc">+</span> </span>
+<span id="cb255-2"><a href="#cb255-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb255-3"><a href="#cb255-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span> </span>
+<span id="cb255-4"><a href="#cb255-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rethinking_ch8_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>The hypothesized negative relationship between ruggedness and economic performance holds for all non-Africa countries. In Africa, there is a positive relationship between ruggedness and economic performance. How could this be?</p>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-5_64c8ea054f250e445e49d971423b4827">
+<div class="sourceCode cell-code" id="cb256"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.2</span></span>
+<span id="cb256-2"><a href="#cb256-2" aria-hidden="true" tabindex="-1"></a>m8<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">quap</span>(</span>
+<span id="cb256-3"><a href="#cb256-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb256-4"><a href="#cb256-4" aria-hidden="true" tabindex="-1"></a>    log_gdp_std <span class="sc">~</span> <span class="fu">dnorm</span>( mu , sigma ) ,</span>
+<span id="cb256-5"><a href="#cb256-5" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> a <span class="sc">+</span> b<span class="sc">*</span>( rugged_std <span class="sc">-</span> <span class="fl">0.215</span> ) , <span class="co"># deviation from mean </span></span>
+<span id="cb256-6"><a href="#cb256-6" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">1</span> , <span class="dv">1</span> ) ,</span>
+<span id="cb256-7"><a href="#cb256-7" aria-hidden="true" tabindex="-1"></a>    b <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="dv">1</span> ) ,</span>
+<span id="cb256-8"><a href="#cb256-8" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dexp</span>( <span class="dv">1</span> )</span>
+<span id="cb256-9"><a href="#cb256-9" aria-hidden="true" tabindex="-1"></a>  ) , <span class="at">data=</span>dd )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in quap(alist(log_gdp_std ~ dnorm(mu, sigma), mu &lt;- a + b * (rugged_std - : object 'dd' not found</code></pre>
+</div>
+</div>
+<p>Let’s look at the priors we created for this model.</p>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-6_71f61ffe99a6cebf1f16f8c47024d7da">
+<div class="sourceCode cell-code" id="cb258"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb258-1"><a href="#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.3</span></span>
+<span id="cb258-2"><a href="#cb258-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb258-3"><a href="#cb258-3" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">extract.prior</span>( m8<span class="fl">.1</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'fit' in selecting a method for function 'extract.prior': object 'm8.1' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb260"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb260-1"><a href="#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(prior<span class="sc">$</span>a))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-7_788fefd31a29437df15647a1ab294d7a">
+<div class="sourceCode cell-code" id="cb262"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb262-1"><a href="#cb262-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(prior[<span class="dv">1</span>]), <span class="fu">aes</span>(a)) <span class="sc">+</span> </span>
+<span id="cb262-2"><a href="#cb262-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in prior[1]: object of type 'closure' is not subsettable</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-8_68c2d5fae6f32165fd27d71463b6ef8f">
+
+</div>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-9_37db6e3aef7b0963cd693812fd12979f">
+
+</div>
+<div class="cell" data-hash="rethinking_ch8_cache/html/unnamed-chunk-10_c41c79a01bfac0120f14b4aca78256e3">
+<div class="sourceCode cell-code" id="cb264"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb264-1"><a href="#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set up the plot dimensions</span></span>
+<span id="cb264-2"><a href="#cb264-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( <span class="cn">NULL</span> , <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>) , <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">1.5</span>) ,</span>
+<span id="cb264-3"><a href="#cb264-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab=</span><span class="st">"ruggedness"</span> , <span class="at">ylab=</span><span class="st">"log GDP"</span> )</span>
+<span id="cb264-4"><a href="#cb264-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">h=</span><span class="fu">min</span>(dd<span class="sc">$</span>log_gdp_std) , <span class="at">lty=</span><span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'dd' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb266"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb266-1"><a href="#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">h=</span><span class="fu">max</span>(dd<span class="sc">$</span>log_gdp_std) , <span class="at">lty=</span><span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'dd' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb268"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb268-1"><a href="#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="co"># draw 50 lines from the prior</span></span>
+<span id="cb268-2"><a href="#cb268-2" aria-hidden="true" tabindex="-1"></a>rugged_seq <span class="ot">&lt;-</span> <span class="fu">seq</span>( <span class="at">from=</span><span class="sc">-</span><span class="fl">0.1</span> , <span class="at">to=</span><span class="fl">1.1</span> , <span class="at">length.out=</span><span class="dv">30</span> )</span>
+<span id="cb268-3"><a href="#cb268-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">link</span>( m8<span class="fl">.1</span> , <span class="at">post=</span>prior , <span class="at">data=</span><span class="fu">data.frame</span>(<span class="at">rugged_std=</span>rugged_seq) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'fit' in selecting a method for function 'link': object 'm8.1' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb270"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb270-1"><a href="#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span> ) <span class="fu">lines</span>( rugged_seq , mu[i,] , <span class="at">col=</span><span class="fu">col.alpha</span>(<span class="st">"black"</span>,<span class="fl">0.3</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in xy.coords(x, y): object 'mu' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb272"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb272-1"><a href="#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.4</span></span>
+<span id="cb272-2"><a href="#cb272-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( <span class="fu">abs</span>(prior<span class="sc">$</span>b) <span class="sc">&gt;</span> <span class="fl">0.6</span> ) <span class="sc">/</span> <span class="fu">length</span>(prior<span class="sc">$</span>b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in prior$b: object of type 'closure' is not subsettable</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb274"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb274-1"><a href="#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.5</span></span>
+<span id="cb274-2"><a href="#cb274-2" aria-hidden="true" tabindex="-1"></a>m8<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">quap</span>(</span>
+<span id="cb274-3"><a href="#cb274-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb274-4"><a href="#cb274-4" aria-hidden="true" tabindex="-1"></a>    log_gdp_std <span class="sc">~</span> <span class="fu">dnorm</span>( mu , sigma ) ,</span>
+<span id="cb274-5"><a href="#cb274-5" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> a <span class="sc">+</span> b<span class="sc">*</span>( rugged_std <span class="sc">-</span> <span class="fl">0.215</span> ) ,</span>
+<span id="cb274-6"><a href="#cb274-6" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">1</span> , <span class="fl">0.1</span> ) ,</span>
+<span id="cb274-7"><a href="#cb274-7" aria-hidden="true" tabindex="-1"></a>    b <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="fl">0.3</span> ) ,</span>
+<span id="cb274-8"><a href="#cb274-8" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dexp</span>(<span class="dv">1</span>)</span>
+<span id="cb274-9"><a href="#cb274-9" aria-hidden="true" tabindex="-1"></a>  ) , <span class="at">data=</span>dd )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in quap(alist(log_gdp_std ~ dnorm(mu, sigma), mu &lt;- a + b * (rugged_std - : object 'dd' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb276"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb276-1"><a href="#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.6</span></span>
+<span id="cb276-2"><a href="#cb276-2" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>( m8<span class="fl">.1</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'precis': object 'm8.1' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb278"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb278-1"><a href="#cb278-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.7</span></span>
+<span id="cb278-2"><a href="#cb278-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make variable to index Africa (1) or not (2)</span></span>
+<span id="cb278-3"><a href="#cb278-3" aria-hidden="true" tabindex="-1"></a>dd<span class="sc">$</span>cid <span class="ot">&lt;-</span> <span class="fu">ifelse</span>( dd<span class="sc">$</span>cont_africa<span class="sc">==</span><span class="dv">1</span> , <span class="dv">1</span> , <span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in ifelse(dd$cont_africa == 1, 1, 2): object 'dd' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb280"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb280-1"><a href="#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.8</span></span>
+<span id="cb280-2"><a href="#cb280-2" aria-hidden="true" tabindex="-1"></a>m8<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">quap</span>(</span>
+<span id="cb280-3"><a href="#cb280-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb280-4"><a href="#cb280-4" aria-hidden="true" tabindex="-1"></a>    log_gdp_std <span class="sc">~</span> <span class="fu">dnorm</span>( mu , sigma ) ,</span>
+<span id="cb280-5"><a href="#cb280-5" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> a[cid] <span class="sc">+</span> b<span class="sc">*</span>( rugged_std <span class="sc">-</span> <span class="fl">0.215</span> ) ,</span>
+<span id="cb280-6"><a href="#cb280-6" aria-hidden="true" tabindex="-1"></a>    a[cid] <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">1</span> , <span class="fl">0.1</span> ) ,</span>
+<span id="cb280-7"><a href="#cb280-7" aria-hidden="true" tabindex="-1"></a>    b <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="fl">0.3</span> ) ,</span>
+<span id="cb280-8"><a href="#cb280-8" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dexp</span>( <span class="dv">1</span> )</span>
+<span id="cb280-9"><a href="#cb280-9" aria-hidden="true" tabindex="-1"></a>  ) , <span class="at">data=</span>dd )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in quap(alist(log_gdp_std ~ dnorm(mu, sigma), mu &lt;- a[cid] + b * : object 'dd' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb282"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb282-1"><a href="#cb282-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.9</span></span>
+<span id="cb282-2"><a href="#cb282-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>( m8<span class="fl">.1</span> , m8<span class="fl">.2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in compare(m8.1, m8.2): object 'm8.1' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb284"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb284-1"><a href="#cb284-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.10</span></span>
+<span id="cb284-2"><a href="#cb284-2" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>( m8<span class="fl">.2</span> , <span class="at">depth=</span><span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'precis': object 'm8.2' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb286"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb286-1"><a href="#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.11</span></span>
+<span id="cb286-2"><a href="#cb286-2" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract.samples</span>(m8<span class="fl">.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'extract.samples': object 'm8.2' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb288"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb288-1"><a href="#cb288-1" aria-hidden="true" tabindex="-1"></a>diff_a1_a2 <span class="ot">&lt;-</span> post<span class="sc">$</span>a[,<span class="dv">1</span>] <span class="sc">-</span> post<span class="sc">$</span>a[,<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in eval(expr, envir, enclos): object 'post' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb290"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb290-1"><a href="#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PI</span>( diff_a1_a2 )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in quantile(samples, probs = c(a, 1 - a)): object 'diff_a1_a2' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb292"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb292-1"><a href="#cb292-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.12</span></span>
+<span id="cb292-2"><a href="#cb292-2" aria-hidden="true" tabindex="-1"></a>rugged.seq <span class="ot">&lt;-</span> <span class="fu">seq</span>( <span class="at">from=</span><span class="sc">-</span><span class="fl">0.1</span> , <span class="at">to=</span><span class="fl">1.1</span> , <span class="at">length.out=</span><span class="dv">30</span> )</span>
+<span id="cb292-3"><a href="#cb292-3" aria-hidden="true" tabindex="-1"></a><span class="co"># compute mu over samples, fixing cid=2 and then cid=1</span></span>
+<span id="cb292-4"><a href="#cb292-4" aria-hidden="true" tabindex="-1"></a>mu.NotAfrica <span class="ot">&lt;-</span> <span class="fu">link</span>( m8<span class="fl">.2</span> ,</span>
+<span id="cb292-5"><a href="#cb292-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data=</span><span class="fu">data.frame</span>( <span class="at">cid=</span><span class="dv">2</span> , <span class="at">rugged_std=</span>rugged.seq ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'fit' in selecting a method for function 'link': object 'm8.2' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb294"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb294-1"><a href="#cb294-1" aria-hidden="true" tabindex="-1"></a>mu.Africa <span class="ot">&lt;-</span> <span class="fu">link</span>( m8<span class="fl">.2</span> ,</span>
+<span id="cb294-2"><a href="#cb294-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data=</span><span class="fu">data.frame</span>( <span class="at">cid=</span><span class="dv">1</span> , <span class="at">rugged_std=</span>rugged.seq ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'fit' in selecting a method for function 'link': object 'm8.2' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb296"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb296-1"><a href="#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize to means and intervals</span></span>
+<span id="cb296-2"><a href="#cb296-2" aria-hidden="true" tabindex="-1"></a>mu.NotAfrica_mu <span class="ot">&lt;-</span> <span class="fu">apply</span>( mu.NotAfrica , <span class="dv">2</span> , mean )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in apply(mu.NotAfrica, 2, mean): object 'mu.NotAfrica' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb298"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb298-1"><a href="#cb298-1" aria-hidden="true" tabindex="-1"></a>mu.NotAfrica_ci <span class="ot">&lt;-</span> <span class="fu">apply</span>( mu.NotAfrica , <span class="dv">2</span> , PI , <span class="at">prob=</span><span class="fl">0.97</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in apply(mu.NotAfrica, 2, PI, prob = 0.97): object 'mu.NotAfrica' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb300"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb300-1"><a href="#cb300-1" aria-hidden="true" tabindex="-1"></a>mu.Africa_mu <span class="ot">&lt;-</span> <span class="fu">apply</span>( mu.Africa , <span class="dv">2</span> , mean )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in apply(mu.Africa, 2, mean): object 'mu.Africa' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb302"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb302-1"><a href="#cb302-1" aria-hidden="true" tabindex="-1"></a>mu.Africa_ci <span class="ot">&lt;-</span> <span class="fu">apply</span>( mu.Africa , <span class="dv">2</span> , PI , <span class="at">prob=</span><span class="fl">0.97</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in apply(mu.Africa, 2, PI, prob = 0.97): object 'mu.Africa' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb304"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb304-1"><a href="#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.13</span></span>
+<span id="cb304-2"><a href="#cb304-2" aria-hidden="true" tabindex="-1"></a>m8<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">quap</span>(</span>
+<span id="cb304-3"><a href="#cb304-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb304-4"><a href="#cb304-4" aria-hidden="true" tabindex="-1"></a>    log_gdp_std <span class="sc">~</span> <span class="fu">dnorm</span>( mu , sigma ) ,</span>
+<span id="cb304-5"><a href="#cb304-5" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> a[cid] <span class="sc">+</span> b[cid]<span class="sc">*</span>( rugged_std <span class="sc">-</span> <span class="fl">0.215</span> ) ,</span>
+<span id="cb304-6"><a href="#cb304-6" aria-hidden="true" tabindex="-1"></a>    a[cid] <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">1</span> , <span class="fl">0.1</span> ) ,</span>
+<span id="cb304-7"><a href="#cb304-7" aria-hidden="true" tabindex="-1"></a>    b[cid] <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="fl">0.3</span> ) ,</span>
+<span id="cb304-8"><a href="#cb304-8" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dexp</span>( <span class="dv">1</span> )</span>
+<span id="cb304-9"><a href="#cb304-9" aria-hidden="true" tabindex="-1"></a>  ) , <span class="at">data=</span>dd )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in quap(alist(log_gdp_std ~ dnorm(mu, sigma), mu &lt;- a[cid] + b[cid] * : object 'dd' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb306"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb306-1"><a href="#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.14</span></span>
+<span id="cb306-2"><a href="#cb306-2" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>( m8<span class="fl">.5</span> , <span class="at">depth=</span><span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'precis': object 'm8.5' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb308"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb308-1"><a href="#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.15</span></span>
+<span id="cb308-2"><a href="#cb308-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>( m8<span class="fl">.1</span> , m8<span class="fl">.2</span> , m8<span class="fl">.3</span> , <span class="at">func=</span>PSIS )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in compare(m8.1, m8.2, m8.3, func = PSIS): object 'm8.1' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb310"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb310-1"><a href="#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.16</span></span>
+<span id="cb310-2"><a href="#cb310-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( <span class="fu">PSIS</span>( m8<span class="fl">.3</span> , <span class="at">pointwise=</span><span class="cn">TRUE</span> )<span class="sc">$</span>k )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': error in evaluating the argument 'object' in selecting a method for function 'PSIS': object 'm8.3' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb312"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb312-1"><a href="#cb312-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.17</span></span>
+<span id="cb312-2"><a href="#cb312-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot Africa - cid=1</span></span>
+<span id="cb312-3"><a href="#cb312-3" aria-hidden="true" tabindex="-1"></a>d.A1 <span class="ot">&lt;-</span> dd[ dd<span class="sc">$</span>cid<span class="sc">==</span><span class="dv">1</span> , ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in eval(expr, envir, enclos): object 'dd' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb314"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb314-1"><a href="#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( d.A1<span class="sc">$</span>rugged_std , d.A1<span class="sc">$</span>log_gdp_std , <span class="at">pch=</span><span class="dv">16</span> , <span class="at">col=</span>rangi2 ,</span>
+<span id="cb314-2"><a href="#cb314-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab=</span><span class="st">"ruggedness (standardized)"</span> , <span class="at">ylab=</span><span class="st">"log GDP (as proportion of mean)"</span> ,</span>
+<span id="cb314-3"><a href="#cb314-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'd.A1' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb316"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb316-1"><a href="#cb316-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">link</span>( m8<span class="fl">.3</span> , <span class="at">data=</span><span class="fu">data.frame</span>( <span class="at">cid=</span><span class="dv">1</span> , <span class="at">rugged_std=</span>rugged_seq ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'fit' in selecting a method for function 'link': object 'm8.3' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb318"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb318-1"><a href="#cb318-1" aria-hidden="true" tabindex="-1"></a>mu_mean <span class="ot">&lt;-</span> <span class="fu">apply</span>( mu , <span class="dv">2</span> , mean )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in apply(mu, 2, mean): object 'mu' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb320"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb320-1"><a href="#cb320-1" aria-hidden="true" tabindex="-1"></a>mu_ci <span class="ot">&lt;-</span> <span class="fu">apply</span>( mu , <span class="dv">2</span> , PI , <span class="at">prob=</span><span class="fl">0.97</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in apply(mu, 2, PI, prob = 0.97): object 'mu' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb322"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb322-1"><a href="#cb322-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>( rugged_seq , mu_mean , <span class="at">lwd=</span><span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in xy.coords(x, y): object 'mu_mean' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb324"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb324-1"><a href="#cb324-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shade</span>( mu_ci , rugged_seq , <span class="at">col=</span><span class="fu">col.alpha</span>(rangi2,<span class="fl">0.3</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in shade(mu_ci, rugged_seq, col = col.alpha(rangi2, 0.3)): object 'mu_ci' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb326"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb326-1"><a href="#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"African nations"</span>)</span>
+<span id="cb326-2"><a href="#cb326-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-3"><a href="#cb326-3" aria-hidden="true" tabindex="-1"></a><span class="co"># plot non-Africa - cid=2</span></span>
+<span id="cb326-4"><a href="#cb326-4" aria-hidden="true" tabindex="-1"></a>d.A0 <span class="ot">&lt;-</span> dd[ dd<span class="sc">$</span>cid<span class="sc">==</span><span class="dv">2</span> , ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in eval(expr, envir, enclos): object 'dd' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb328"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb328-1"><a href="#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( d.A0<span class="sc">$</span>rugged_std , d.A0<span class="sc">$</span>log_gdp_std , <span class="at">pch=</span><span class="dv">1</span> , <span class="at">col=</span><span class="st">"black"</span> ,</span>
+<span id="cb328-2"><a href="#cb328-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab=</span><span class="st">"ruggedness (standardized)"</span> , <span class="at">ylab=</span><span class="st">"log GDP (as proportion of mean)"</span> ,</span>
+<span id="cb328-3"><a href="#cb328-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'd.A0' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb330"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb330-1"><a href="#cb330-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">link</span>( m8<span class="fl">.3</span> , <span class="at">data=</span><span class="fu">data.frame</span>( <span class="at">cid=</span><span class="dv">2</span> , <span class="at">rugged_std=</span>rugged_seq ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'fit' in selecting a method for function 'link': object 'm8.3' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb332"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb332-1"><a href="#cb332-1" aria-hidden="true" tabindex="-1"></a>mu_mean <span class="ot">&lt;-</span> <span class="fu">apply</span>( mu , <span class="dv">2</span> , mean )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in apply(mu, 2, mean): object 'mu' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb334"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb334-1"><a href="#cb334-1" aria-hidden="true" tabindex="-1"></a>mu_ci <span class="ot">&lt;-</span> <span class="fu">apply</span>( mu , <span class="dv">2</span> , PI , <span class="at">prob=</span><span class="fl">0.97</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in apply(mu, 2, PI, prob = 0.97): object 'mu' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb336"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb336-1"><a href="#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>( rugged_seq , mu_mean , <span class="at">lwd=</span><span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in xy.coords(x, y): object 'mu_mean' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb338"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb338-1"><a href="#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shade</span>( mu_ci , rugged_seq )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in shade(mu_ci, rugged_seq): object 'mu_ci' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb340"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb340-1"><a href="#cb340-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Non-African nations"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rethinking_ch8_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="576"></p>
+</div>
+<div class="sourceCode cell-code" id="cb341"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb341-1"><a href="#cb341-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.18</span></span>
+<span id="cb341-2"><a href="#cb341-2" aria-hidden="true" tabindex="-1"></a>rugged_seq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="sc">-</span><span class="fl">0.2</span>,<span class="at">to=</span><span class="fl">1.2</span>,<span class="at">length.out=</span><span class="dv">30</span>)</span>
+<span id="cb341-3"><a href="#cb341-3" aria-hidden="true" tabindex="-1"></a>muA <span class="ot">&lt;-</span> <span class="fu">link</span>( m8<span class="fl">.3</span> , <span class="at">data=</span><span class="fu">data.frame</span>(<span class="at">cid=</span><span class="dv">1</span>,<span class="at">rugged_std=</span>rugged_seq) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'fit' in selecting a method for function 'link': object 'm8.3' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb343"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb343-1"><a href="#cb343-1" aria-hidden="true" tabindex="-1"></a>muN <span class="ot">&lt;-</span> <span class="fu">link</span>( m8<span class="fl">.3</span> , <span class="at">data=</span><span class="fu">data.frame</span>(<span class="at">cid=</span><span class="dv">2</span>,<span class="at">rugged_std=</span>rugged_seq) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'fit' in selecting a method for function 'link': object 'm8.3' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb345"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb345-1"><a href="#cb345-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> muA <span class="sc">-</span> muN</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in eval(expr, envir, enclos): object 'muA' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb347"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb347-1"><a href="#cb347-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.19</span></span>
+<span id="cb347-2"><a href="#cb347-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span>
+<span id="cb347-3"><a href="#cb347-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(tulips)</span>
+<span id="cb347-4"><a href="#cb347-4" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> tulips</span>
+<span id="cb347-5"><a href="#cb347-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   27 obs. of  4 variables:
+ $ bed   : Factor w/ 3 levels "a","b","c": 1 1 1 1 1 1 1 1 1 2 ...
+ $ water : int  1 1 1 2 2 2 3 3 3 1 ...
+ $ shade : int  1 2 3 1 2 3 1 2 3 1 ...
+ $ blooms: num  0 0 111 183.5 59.2 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb349"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb349-1"><a href="#cb349-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.20</span></span>
+<span id="cb349-2"><a href="#cb349-2" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>blooms_std <span class="ot">&lt;-</span> d<span class="sc">$</span>blooms <span class="sc">/</span> <span class="fu">max</span>(d<span class="sc">$</span>blooms)</span>
+<span id="cb349-3"><a href="#cb349-3" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>water_cent <span class="ot">&lt;-</span> d<span class="sc">$</span>water <span class="sc">-</span> <span class="fu">mean</span>(d<span class="sc">$</span>water)</span>
+<span id="cb349-4"><a href="#cb349-4" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>shade_cent <span class="ot">&lt;-</span> d<span class="sc">$</span>shade <span class="sc">-</span> <span class="fu">mean</span>(d<span class="sc">$</span>shade)</span>
+<span id="cb349-5"><a href="#cb349-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb349-6"><a href="#cb349-6" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.21</span></span>
+<span id="cb349-7"><a href="#cb349-7" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">rnorm</span>( <span class="fl">1e4</span> , <span class="fl">0.5</span> , <span class="dv">1</span> ); <span class="fu">sum</span>( a <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> a <span class="sc">&gt;</span> <span class="dv">1</span> ) <span class="sc">/</span> <span class="fu">length</span>( a )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.611</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb351"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb351-1"><a href="#cb351-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.22</span></span>
+<span id="cb351-2"><a href="#cb351-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">rnorm</span>( <span class="fl">1e4</span> , <span class="fl">0.5</span> , <span class="fl">0.25</span> ); <span class="fu">sum</span>( a <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> a <span class="sc">&gt;</span> <span class="dv">1</span> ) <span class="sc">/</span> <span class="fu">length</span>( a )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0485</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb353"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb353-1"><a href="#cb353-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.23</span></span>
+<span id="cb353-2"><a href="#cb353-2" aria-hidden="true" tabindex="-1"></a>m8<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">quap</span>(</span>
+<span id="cb353-3"><a href="#cb353-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb353-4"><a href="#cb353-4" aria-hidden="true" tabindex="-1"></a>    blooms_std <span class="sc">~</span> <span class="fu">dnorm</span>( mu , sigma ) ,</span>
+<span id="cb353-5"><a href="#cb353-5" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> a <span class="sc">+</span> bw<span class="sc">*</span>water_cent <span class="sc">+</span> bs<span class="sc">*</span>shade_cent ,</span>
+<span id="cb353-6"><a href="#cb353-6" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="fl">0.5</span> , <span class="fl">0.25</span> ) ,</span>
+<span id="cb353-7"><a href="#cb353-7" aria-hidden="true" tabindex="-1"></a>    bw <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="fl">0.25</span> ) ,</span>
+<span id="cb353-8"><a href="#cb353-8" aria-hidden="true" tabindex="-1"></a>    bs <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="fl">0.25</span> ) ,</span>
+<span id="cb353-9"><a href="#cb353-9" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dexp</span>( <span class="dv">1</span> )</span>
+<span id="cb353-10"><a href="#cb353-10" aria-hidden="true" tabindex="-1"></a>  ) , <span class="at">data=</span>d )</span>
+<span id="cb353-11"><a href="#cb353-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb353-12"><a href="#cb353-12" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.24</span></span>
+<span id="cb353-13"><a href="#cb353-13" aria-hidden="true" tabindex="-1"></a>m8<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">quap</span>(</span>
+<span id="cb353-14"><a href="#cb353-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb353-15"><a href="#cb353-15" aria-hidden="true" tabindex="-1"></a>    blooms_std <span class="sc">~</span> <span class="fu">dnorm</span>( mu , sigma ) ,</span>
+<span id="cb353-16"><a href="#cb353-16" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> a <span class="sc">+</span> bw<span class="sc">*</span>water_cent <span class="sc">+</span> bs<span class="sc">*</span>shade_cent <span class="sc">+</span> bws<span class="sc">*</span>water_cent<span class="sc">*</span>shade_cent ,</span>
+<span id="cb353-17"><a href="#cb353-17" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="fl">0.5</span> , <span class="fl">0.25</span> ) ,</span>
+<span id="cb353-18"><a href="#cb353-18" aria-hidden="true" tabindex="-1"></a>    bw <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="fl">0.25</span> ) ,</span>
+<span id="cb353-19"><a href="#cb353-19" aria-hidden="true" tabindex="-1"></a>    bs <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="fl">0.25</span> ) ,</span>
+<span id="cb353-20"><a href="#cb353-20" aria-hidden="true" tabindex="-1"></a>    bws <span class="sc">~</span> <span class="fu">dnorm</span>( <span class="dv">0</span> , <span class="fl">0.25</span> ) ,</span>
+<span id="cb353-21"><a href="#cb353-21" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dexp</span>( <span class="dv">1</span> )</span>
+<span id="cb353-22"><a href="#cb353-22" aria-hidden="true" tabindex="-1"></a>  ) , <span class="at">data=</span>d )</span>
+<span id="cb353-23"><a href="#cb353-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb353-24"><a href="#cb353-24" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.25</span></span>
+<span id="cb353-25"><a href="#cb353-25" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) <span class="co"># 3 plots in 1 row</span></span>
+<span id="cb353-26"><a href="#cb353-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ( s <span class="cf">in</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">:</span><span class="dv">1</span> ) {</span>
+<span id="cb353-27"><a href="#cb353-27" aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">&lt;-</span> <span class="fu">which</span>( d<span class="sc">$</span>shade_cent<span class="sc">==</span>s )</span>
+<span id="cb353-28"><a href="#cb353-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>( d<span class="sc">$</span>water_cent[idx] , d<span class="sc">$</span>blooms_std[idx] , <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>) , <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>) ,</span>
+<span id="cb353-29"><a href="#cb353-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">"water"</span> , <span class="at">ylab=</span><span class="st">"blooms"</span> , <span class="at">pch=</span><span class="dv">16</span> , <span class="at">col=</span>rangi2 )</span>
+<span id="cb353-30"><a href="#cb353-30" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> <span class="fu">link</span>( m8<span class="fl">.4</span> , <span class="at">data=</span><span class="fu">data.frame</span>( <span class="at">shade_cent=</span>s , <span class="at">water_cent=</span><span class="sc">-</span><span class="dv">1</span><span class="sc">:</span><span class="dv">1</span> ) )</span>
+<span id="cb353-31"><a href="#cb353-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> ( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span> ) <span class="fu">lines</span>( <span class="sc">-</span><span class="dv">1</span><span class="sc">:</span><span class="dv">1</span> , mu[i,] , <span class="at">col=</span><span class="fu">col.alpha</span>(<span class="st">"black"</span>,<span class="fl">0.3</span>) )</span>
+<span id="cb353-32"><a href="#cb353-32" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rethinking_ch8_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="576"></p>
+</div>
+<div class="sourceCode cell-code" id="cb354"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb354-1"><a href="#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.26</span></span>
+<span id="cb354-2"><a href="#cb354-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb354-3"><a href="#cb354-3" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">extract.prior</span>(m8<span class="fl">.5</span>)</span>
+<span id="cb354-4"><a href="#cb354-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb354-5"><a href="#cb354-5" aria-hidden="true" tabindex="-1"></a><span class="do">## R code 8.27</span></span>
+<span id="cb354-6"><a href="#cb354-6" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>lang.per.cap <span class="ot">&lt;-</span> d<span class="sc">$</span>num.lang <span class="sc">/</span> d<span class="sc">$</span>k.pop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `$&lt;-.data.frame`(`*tmp*`, lang.per.cap, value = numeric(0)): replacement has 0 rows, data has 27</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

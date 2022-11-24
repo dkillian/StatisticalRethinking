@@ -103,11 +103,9 @@ What's the probability that the proportion of water on Earth is less than 50%?
 
 Recall that the posterior is a probability distribution that sums to 1, so we can simply add up the posterior values along the grid that are less than 50%. 
 
-```{r}
-## R code 3.6
+```{r 3.6}
 # add up posterior probability where p < 0.5
 sum( posterior[ p_grid < 0.5 ] )
-
 ```
 More intuitive is to work with a sample of parameter estimates, which we interpret as representing the true probability distribution. So we simply look at what proportion of estimates are less than 50%, from the entire distribution of parameter estimates. 
 
@@ -128,10 +126,8 @@ Let's look at the range and endpoints defined by the probability mass, rather th
 
 What are the boundaries of the lower 80% of the posterior distribution? 
 
-```{r}
-## R code 3.9
+```{r 3.9}
 quantile( samples$x , 0.8 )
-
 ```
 
 What interval defines the middle 80% of the posterior probability mass? 
@@ -144,8 +140,8 @@ quantile( samples[,2] , c( 0.1 , 0.9 ) )
 ```
 These intervals assign equal mass to each side, which doesn't work as well for assymetric distributions. 
 
-```{r}
-## R code 3.11
+```{r 3.11}
+
 set.seed(43)
 p_grid <- seq( from=0 , to=1 , length.out=1000 )
 prior <- rep(1,1000)
@@ -154,16 +150,20 @@ posterior <- likelihood * prior
 posterior <- posterior / sum(posterior)
 samples <- data.frame(x = sample( p_grid , size=1e4 , replace=TRUE , prob=posterior ))
 
-## R code 3.12
 PI( samples , prob=0.5 )
 
 ```
 
 
 
+```{r remedy001}
+
 ## R code 3.13
 HPDI( samples , prob=0.5 )
+```
 
+
+```{r remedy002}
 ## R code 3.14
 p_grid[ which.max(posterior) ]
 
@@ -179,6 +179,11 @@ sum( posterior*abs( 0.5 - p_grid ) )
 
 ## R code 3.18
 loss <- sapply( p_grid , function(d) sum( posterior*abs( d - p_grid ) ) )
+```
+
+
+
+```{r remedy003}
 
 ## R code 3.19
 p_grid[ which.min(loss) ]
@@ -199,12 +204,18 @@ table(dummy_w)/1e5
 ## R code 3.24
 dummy_w <- rbinom( 1e5 , size=9 , prob=0.7 )
 simplehist( dummy_w , xlab="dummy water count" )
+ggplot(data.frame(x=dummy_w), aes(x)) + 
+  geom_histogram()
 
 ## R code 3.25
 w <- rbinom( 1e4 , size=9 , prob=0.6 )
 
 ## R code 3.26
 w <- rbinom( 1e4 , size=9 , prob=samples )
+
+```
+
+```{r remedy004}
 
 ## R code 3.27
 p_grid <- seq( from=0 , to=1 , length.out=1000 )
@@ -214,6 +225,8 @@ posterior <- likelihood * prior
 posterior <- posterior / sum(posterior)
 set.seed(100)
 samples <- sample( p_grid , prob=posterior , size=1e4 , replace=TRUE )
+
+```
 
 ## R code 3.28
 birth1 <- c(1,0,0,0,1,1,0,1,0,1,0,0,1,1,0,1,1,0,0,0,1,0,0,0,1,0,
