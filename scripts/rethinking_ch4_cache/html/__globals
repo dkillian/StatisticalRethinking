@@ -1,0 +1,4 @@
+unnamed-chunk-1	c	sample	set.seed	T
+unnamed-chunk-2	a	sum
+unnamed-chunk-3	%>%	a	aes	c	cumsum	data.frame	element_text	geom_hline	geom_line	geom_point	ggplot	mutate	out	Outcome	scale_x_continuous	scale_y_continuous	Step	theme
+unnamed-chunk-4	replicate	runif	sum
