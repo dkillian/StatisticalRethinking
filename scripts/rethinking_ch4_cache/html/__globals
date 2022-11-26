@@ -1,4 +1,11 @@
 unnamed-chunk-1	c	sample	set.seed	T
 unnamed-chunk-2	a	sum
 unnamed-chunk-3	%>%	a	aes	c	cumsum	data.frame	element_text	geom_hline	geom_line	geom_point	ggplot	mutate	out	Outcome	scale_x_continuous	scale_y_continuous	Step	theme
-unnamed-chunk-4	replicate	runif	sum
+unnamed-chunk-4	%>%	c	cumsum	data.frame	mutate	out	sample	T
+unnamed-chunk-5	%>%	aes	as.factor	bind_rows	c	element_text	geom_hline	geom_line	ggplot	Outcome	p1	p2	path	scale_color_viridis_d	scale_x_continuous	scale_y_continuous	Step	str	theme
+unnamed-chunk-6	%>%	aes	as.factor	bind_rows	c	cumsum	data.frame	element_text	geom_hline	geom_line	ggplot	mutate	out	Outcome	path	sample	scale_color_viridis_d	scale_x_continuous	scale_y_continuous	Step	str	T	theme
+unnamed-chunk-7	%>%	arrange	as.data.frame	as.numeric	bind_rows	c	cumsum	data.frame	group_by	mutate	nchar	out	path	pivot_longer	rep	replicate	sample	set.seed	Step	str_sub	t	T	ungroup
+unnamed-chunk-8	%>%	aes	as.factor	c	d	element_text	filter	geom_hline	geom_line	ggplot	labs	Outcome	path	position_jitter	sample	scale_color_viridis_d	scale_x_continuous	scale_y_continuous	Step	theme
+unnamed-chunk-9	ggsave	here
+unnamed-chunk-10	%>%	==	aes	c	d	element_blank	filter	geom_bar	ggplot	labs	Outcome	scale_x_continuous	seq	Step	theme
+unnamed-chunk-11	

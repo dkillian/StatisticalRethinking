@@ -4,7 +4,7 @@ smallBase <- c("arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimat
                "tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix",
                "scales","survey", "srvyr", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr",
                "readxl","labelled", "texreg", "janitor", "sysfonts", "sjmisc",
-               "psych","dplyr", "tidybayes", "viridis", "here", "ggridges", "ggthemes", "DT",
+               "psych","dplyr", "tidybayes", "viridis", "here", "ggridges", "ggthemes", "DT", "gt",
                "workflowr", "pointblank", "cmdstanr", "patchwork", "tidyverse", "cmdstanr", "rethinking")
 
 
