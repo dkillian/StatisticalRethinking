@@ -1,7 +1,7 @@
 ---
-title: "Statistical Rethinking"
+title: "Statistical Rethinking (McElreath 2020)"
 subtitle: "Chapter 4 - Geocentric Models"
-author: "Dan Killian notes"
+author: "Dan Killian chapter notes"
 date: "11/19/2022"
 toc: true
 toc-depth: 3
@@ -28,7 +28,7 @@ Linear regression is the geocentric model of applied statistics. Regardless of t
 
 This chapter introduces linear regression as a Bayesian procedure. Since Bayesian analysis requires a probability model, we use a normal distribution to benchmark our uncertainty about some outcome of interest. Once we learn linear regression and how it is expressed as a Bayesian procedure, we can move on to other forms of regression which are not so normal.
 
-### 4.1 Why normal distributions are normal
+## Why normal distributions are normal
 
 There are many ways to generate a normal distribution as a description of a real-world physical process. Let's start with a sequence of steps. The steps are randomly generated, and can go either left (-1) or right (1). Let's look at a sequence of 16 steps.
 
@@ -227,4 +227,127 @@ That looks a lot like a normal distribution with mean zero. McElreath explains h
 
 > Whatever the average value of the source distribution, each sample from it can be thought of as a fluctuation from that average value. When we begin to add these fluctuations together, they also begin to cancel one another out. A large positive fluctuation will cancel a large negative one. The more terms in the sum, the more chances for each fluctuation to be canceled by another, or by a series of smaller ones in the opposite direction. So eventually the most likely sum, in the sense that there are the most ways to realize it, will be a sum in which every fluctuation is canceled by another, a sum of zero (relative to the mean).
 
-We can also get a normal distribution through multiplication.
+We can also get a normal distribution through multiplication. Suppose that there are several growth factors that interact with one another to produce a percentage increase in growth, rather than a sum. Each growth factor interacts with another factor multiplicatively.
+
+```{r}
+a <- round(1 + runif(12, 0, .1),2)
+a
+```
+
+```{r}
+prod(a)
+
+```
+
+```{r}
+a_rep <- data.frame(x=replicate(1000, prod(1+runif(12, 0,.1))))
+
+ggplot(a_rep, aes(x)) + 
+  geom_density(color="dodgerblue2", size=1)
+```
+
+Small effects that multiply together are additive, but note that this is not true for large multiplicative effects.
+
+```{r}
+a_rep2 <- data.frame(x=replicate(1000, prod(1+runif(12, 0,.6))))
+
+ggplot(a_rep2, aes(x)) + 
+  geom_density(color="dodgerblue2", size=1)
+```
+
+However, we can get back to a normal distribution by taking the log of these large multiplicative effects.
+
+```{r}
+a_rep3 <- data.frame(x=replicate(1000, log(prod(1+runif(12, 0,.1)))))
+
+ggplot(a_rep3, aes(x)) + 
+  geom_density(color="dodgerblue2", size=1)
+```
+
+Recall that summing logs is the same as multiplying the original numbers, so we get back the normal distribution. This is of course the motivation for taking the log of a variable with high skew, in order to recover a normal distribution.[^1]
+
+[^1]: The normal (Gaussian\] distribution is a member of a family of fundamental natural distributions known as the exponential family.
+
+There are additional reasons to model your data using a Gaussian distribution as your reference point. As McElreath explains:
+
+> When all we know or are willing to say about a distribution of measures (continuous values along the real number line) is their mean and variance, then the Gaussian distribution arises as the most consistent with our assumptions.
+>
+> That is to say that the Gaussian distribution is the most natural expression of our state of ignorance, because if all we are willing to assume is that a measure has finite variance, the Gaussian distribution is the shape that can be realized in the largest number of ways and does not introduce any new assumptions... This epistemological justification is premised on information theory \[Chapter 7\] and maximum entropy \[Chapter 10\].
+
+So we proceed with using normal distributions as a reference point for inference / analysis.
+
+## A Guassian model for height
+
+We will now look at data of human heights and model it according to a Gaussian distribution.
+
+```{r}
+data(Howell1)
+d <- Howell1
+rm(Howell1)
+str(d)
+```
+
+```{r}
+precis(d)
+```
+
+Let's deal only with adults, in order to avoid any complicating relationships associated with maturation and height.
+
+```{r}
+d2 <- d %>%
+  filter(age>=18)
+
+ggplot(d2, aes(height)) +
+  geom_density(color="dodgerblue2", size=1)
+```
+
+It looks rather normally distributed, but it also looks uniform at modal values of 150-160.
+
+If we're going to use the Gaussian distribution to model this data, than we need to estimate the two parameters mean $\mu$ and standard deviation \$\\sigma\$. To define the heights as normally distributed with a mean $\mu$ and standard deviation $\sigma$, we write:
+
+$$h_i\sim Normal(\mu, \sigma)$$
+
+The height of each individual element in the data is governed by a common parameter of $\mu$ and \$\\sigma\$. We don't know the values of these parameters so we cycle through the range of candidate values and assess the likelihood that each combination of $\mu$ and $\sigma$ could explain the data. Thus, the model line above is referred to as the likelihood function of the model.
+
+We also need to describe, or set, our prior information about the parameters:
+
+$$\mu \sim Normal(178,20)$$
+$$
+\sigma \sim Uniform(0,50)
+$$
+
+178 centimeters is just McElreath's own height, in order to set the prior value as though McElreath knew only his own height, or took his own height as a reasonable draw from the population of human heights. The standard deviation of $\mu$ is large, ensuring that this initial estimate of the mean of the population of adult human heights could be anything 40 centimeters taller or shorter. We also have an initial estimate of the standard deviation of human heights, where 95% of the data could range 100 centimeters above or below the mean.
+
+It's always a good idea to have a good sense of what prior information you are programming into your model. This modeling is referred to as the prior predictive distribution.
+
+```{r}
+ggplot() +
+  xlim(120, 236) + 
+  geom_function(fun=dnorm, 
+                args=list(mean=178, sd=20),
+                color="dodgerblue2",
+                size=1) +
+  scale_x_continuous(limits=c(120, 240),
+                     breaks=seq(120,240,10)) +
+  theme(axis.ticks.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.y=element_blank())
+```
+
+```{r}
+
+ggplot() +
+  xlim(-20, 70) + 
+  geom_function(fun=dunif, 
+                args=list(min=0, max=50),
+                color="dodgerblue2",
+                size=1) +
+  theme(axis.ticks.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.y=element_blank())
+
+```
+
+Ok, let's model!
+
+## Grid approximation of the posterior distribution
