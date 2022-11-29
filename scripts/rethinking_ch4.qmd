@@ -303,16 +303,15 @@ ggplot(d2, aes(height)) +
 
 It looks rather normally distributed, but it also looks uniform at modal values of 150-160.
 
-If we're going to use the Gaussian distribution to model this data, than we need to estimate the two parameters mean $\mu$ and standard deviation \$\\sigma\$. To define the heights as normally distributed with a mean $\mu$ and standard deviation $\sigma$, we write:
+If we're going to use the Gaussian distribution to model this data, than we need to estimate the two parameters mean $\mu$ and standard deviation $\sigma$. To define the heights as normally distributed with a mean $\mu$ and standard deviation $\sigma$, we write:
 
 $$h_i\sim Normal(\mu, \sigma)$$
 
-The height of each individual element in the data is governed by a common parameter of $\mu$ and \$\\sigma\$. We don't know the values of these parameters so we cycle through the range of candidate values and assess the likelihood that each combination of $\mu$ and $\sigma$ could explain the data. Thus, the model line above is referred to as the likelihood function of the model.
+The height of each individual element in the data is governed by a common parameter of $\mu$ and $\sigma$. We don't know the values of these parameters so we cycle through the range of candidate values and assess the likelihood that each combination of $\mu$ and $\sigma$ could explain the data. Thus, the model line above is referred to as the likelihood function of the model.
 
 We also need to describe, or set, our prior information about the parameters:
 
-$$\mu \sim Normal(178,20)$$
-$$
+$$\mu \sim Normal(178,20)$$ $$
 \sigma \sim Uniform(0,50)
 $$
 
@@ -351,3 +350,33 @@ ggplot() +
 Ok, let's model!
 
 ## Grid approximation of the posterior distribution
+
+McElreath now tries to show us the computation in a way that we can sort of follow from the ideas of Bayes Theorem.
+
+```{r}
+describe(d2$height)
+```
+
+```{r}
+
+mu.list <- round(seq( from=137, to=179 , length.out=1000 ),2)
+mu.list
+
+sigma.list <- round(seq( from=6 , to=10 , length.out=1000 ), 4)
+
+post <- expand.grid( mu=mu.list , sigma=sigma.list )
+head(post)
+
+post$LL <- sapply( 1:nrow(post) , function(i) sum(
+  dnorm( d2$height , post$mu[i] , post$sigma[i] , log=TRUE ) ) )
+
+ggplot(post, aes(mu, LL)) + 
+  geom_vline(xintercept=155, color="darkgoldenrod2", alpha=.5, size=1.5) +
+  geom_line(color="dodgerblue2", alpha=.2)
+
+post$prod <- post$LL + dnorm( post$mu , 178 , 20 , TRUE ) +
+  dunif( post$sigma , 0 , 50 , TRUE )
+post$prob <- exp( post$prod - max(post$prod) )
+
+
+```
