@@ -311,7 +311,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>Let’s look at the distribution of final scores.</p>
-<div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-10_1fed73085a4f9b08442ab9e0f18a304f">
+<div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-10_6f80370cfa9c9c057a1ef6e01061724e">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fin <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Step<span class="sc">==</span><span class="dv">16</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -330,6 +330,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell-output-display">
 <p><img src="rethinking_ch4_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="576"></p>
 </div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave(here("viz/Chapter 4/distribution of end points.png"),</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#        device="png",</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#        type="cairo",</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#        height=4, </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#        width=7)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>That looks a lot like a normal distribution with mean zero. McElreath explains how this could be so:</p>
 <blockquote class="blockquote">
@@ -337,43 +342,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </blockquote>
 <p>We can also get a normal distribution through multiplication. Suppose that there are several growth factors that interact with one another to produce a percentage increase in growth, rather than a sum. Each growth factor interacts with another factor multiplicatively.</p>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-11_5fb78e1bd4b6df5e9c4ab0e32f4067e2">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">0</span>, .<span class="dv">1</span>),<span class="dv">2</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">0</span>, .<span class="dv">1</span>),<span class="dv">2</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 1.07 1.09 1.03 1.06 1.09 1.01 1.05 1.03 1.05 1.08 1.08 1.06</code></pre>
 </div>
 </div>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-12_78afcee5ff13432dd11f33f61096f2e4">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.97</code></pre>
 </div>
 </div>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-13_ba056bb0712b9148c37a2d6c53a89787">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>a_rep <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">prod</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">0</span>,.<span class="dv">1</span>))))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(a_rep, <span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>a_rep <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">prod</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">0</span>,.<span class="dv">1</span>))))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(a_rep, <span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="rethinking_ch4_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
 <p>Small effects that multiply together are additive, but note that this is not true for large multiplicative effects.</p>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-14_7b85bde56690c8cb95bda70d83d810d2">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>a_rep2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">prod</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">0</span>,.<span class="dv">6</span>))))</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(a_rep2, <span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>a_rep2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">prod</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">0</span>,.<span class="dv">6</span>))))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(a_rep2, <span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="rethinking_ch4_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
 <p>However, we can get back to a normal distribution by taking the log of these large multiplicative effects.</p>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-15_8206997d495ac4ea44d16ba0ccd37d56">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>a_rep3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">log</span>(<span class="fu">prod</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">0</span>,.<span class="dv">1</span>)))))</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(a_rep3, <span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>a_rep3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">log</span>(<span class="fu">prod</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">runif</span>(<span class="dv">12</span>, <span class="dv">0</span>,.<span class="dv">1</span>)))))</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(a_rep3, <span class="fu">aes</span>(x)) <span class="sc">+</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="rethinking_ch4_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="576"></p>
 </div>
@@ -390,10 +395,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="a-guassian-model-for-height">A Guassian model for height</h2>
 <p>We will now look at data of human heights and model it according to a Gaussian distribution.</p>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-16_bc1a9ecf3167d926e75cd4ceedd47ed2">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Howell1)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> Howell1</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(Howell1)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Howell1)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> Howell1</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(Howell1)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   544 obs. of  4 variables:
  $ height: num  152 140 137 157 145 ...
@@ -403,7 +408,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-17_caf0420ab8c298aded0ea772200f8424">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          mean   sd  5.5% 94.5%
 height 138.264 27.6 81.11 165.7
@@ -419,11 +424,11 @@ male                           &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2
 </div>
 <p>Let’s deal only with adults, in order to avoid any complicating relationships associated with maturation and height.</p>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-18_0e5bb115d0f425bac4022e4150cd27dd">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age<span class="sc">&gt;=</span><span class="dv">18</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d2, <span class="fu">aes</span>(height)) <span class="sc">+</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age<span class="sc">&gt;=</span><span class="dv">18</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d2, <span class="fu">aes</span>(height)) <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="rethinking_ch4_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="576"></p>
 </div>
@@ -438,32 +443,33 @@ male                           &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2
 <p>$$</p>
 <p>178 centimeters is just McElreath’s own height, in order to set the prior value as though McElreath knew only his own height, or took his own height as a reasonable draw from the population of human heights. The standard deviation of <span class="math inline">\(\mu\)</span> is large, ensuring that this initial estimate of the mean of the population of adult human heights could be anything 40 centimeters taller or shorter. We also have an initial estimate of the standard deviation of human heights, where 95% of the data could range 100 centimeters above or below the mean.</p>
 <p>It’s always a good idea to have a good sense of what prior information you are programming into your model. This modeling is referred to as the prior predictive distribution.</p>
-<div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-19_03a9ac90e94b3789243e114d15d12138">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">120</span>, <span class="dv">236</span>) <span class="sc">+</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun=</span>dnorm, </span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">args=</span><span class="fu">list</span>(<span class="at">mean=</span><span class="dv">178</span>, <span class="at">sd=</span><span class="dv">20</span>),</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">color=</span><span class="st">"dodgerblue2"</span>,</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">240</span>),</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">120</span>,<span class="dv">240</span>,<span class="dv">10</span>)) <span class="sc">+</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-19_0a72ab3c00e195f5f55fe3e76eb59b4d">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">data=</span>d2, <span class="fu">aes</span>(<span class="at">x=</span>height), <span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">120</span>, <span class="dv">236</span>) <span class="sc">+</span> </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun=</span>dnorm, </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">args=</span><span class="fu">list</span>(<span class="at">mean=</span><span class="dv">178</span>, <span class="at">sd=</span><span class="dv">20</span>),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">color=</span><span class="st">"firebrick2"</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">240</span>),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">120</span>,<span class="dv">240</span>,<span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="rethinking_ch4_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
-<div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-20_a22424b5ac11b967aef43ec77d1c9b09">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="dv">70</span>) <span class="sc">+</span> </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun=</span>dunif, </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">args=</span><span class="fu">list</span>(<span class="at">min=</span><span class="dv">0</span>, <span class="at">max=</span><span class="dv">50</span>),</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">color=</span><span class="st">"dodgerblue2"</span>,</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-20_d2f698808bfce4ccf17f36c0e7b30b96">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="dv">70</span>) <span class="sc">+</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun=</span>dunif, </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">args=</span><span class="fu">list</span>(<span class="at">min=</span><span class="dv">0</span>, <span class="at">max=</span><span class="dv">50</span>),</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">color=</span><span class="st">"firebrick2"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="rethinking_ch4_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="576"></p>
 </div>
@@ -474,77 +480,20 @@ male                           &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2
 <h2 class="anchored" data-anchor-id="grid-approximation-of-the-posterior-distribution">Grid approximation of the posterior distribution</h2>
 <p>McElreath now tries to show us the computation in a way that we can sort of follow from the ideas of Bayes Theorem.</p>
 <div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-21_81f73712e31523c7d6f7d3dd43c96fe6">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(d2<span class="sc">$</span>height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(d2<span class="sc">$</span>height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   vars   n mean   sd median trimmed  mad min max range skew kurtosis   se
 X1    1 352  155 7.74    154     154 8.47 137 179  42.5 0.15    -0.51 0.41</code></pre>
 </div>
 </div>
-<div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-22_09cab28ba129696c074afd17b94faf51">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>mu.list <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">seq</span>( <span class="at">from=</span><span class="dv">137</span>, <span class="at">to=</span><span class="dv">179</span> , <span class="at">length.out=</span><span class="dv">1000</span> ),<span class="dv">2</span>)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>mu.list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   [1] 137 137 137 137 137 137 137 137 137 137 137 137 138 138 138 138 138 138
-  [19] 138 138 138 138 138 138 138 138 138 138 138 138 138 138 138 138 138 138
-  [37] 139 139 139 139 139 139 139 139 139 139 139 139 139 139 139 139 139 139
-  [55] 139 139 139 139 139 139 140 140 140 140 140 140 140 140 140 140 140 140
-  [73] 140 140 140 140 140 140 140 140 140 140 140 140 141 141 141 141 141 141
-  [91] 141 141 141 141 141 141 141 141 141 141 141 141 141 141 141 141 141 142
- [109] 142 142 142 142 142 142 142 142 142 142 142 142 142 142 142 142 142 142
- [127] 142 142 142 142 142 143 143 143 143 143 143 143 143 143 143 143 143 143
- [145] 143 143 143 143 143 143 143 143 143 143 143 144 144 144 144 144 144 144
- [163] 144 144 144 144 144 144 144 144 144 144 144 144 144 144 144 144 144 145
- [181] 145 145 145 145 145 145 145 145 145 145 145 145 145 145 145 145 145 145
- [199] 145 145 145 145 145 146 146 146 146 146 146 146 146 146 146 146 146 146
- [217] 146 146 146 146 146 146 146 146 146 146 146 147 147 147 147 147 147 147
- [235] 147 147 147 147 147 147 147 147 147 147 147 147 147 147 147 147 148 148
- [253] 148 148 148 148 148 148 148 148 148 148 148 148 148 148 148 148 148 148
- [271] 148 148 148 148 149 149 149 149 149 149 149 149 149 149 149 149 149 149
- [289] 149 149 149 149 149 149 149 149 149 149 150 150 150 150 150 150 150 150
- [307] 150 150 150 150 150 150 150 150 150 150 150 150 150 150 150 150 151 151
- [325] 151 151 151 151 151 151 151 151 151 151 151 151 151 151 151 151 151 151
- [343] 151 151 151 152 152 152 152 152 152 152 152 152 152 152 152 152 152 152
- [361] 152 152 152 152 152 152 152 152 152 153 153 153 153 153 153 153 153 153
- [379] 153 153 153 153 153 153 153 153 153 153 153 153 153 153 153 154 154 154
- [397] 154 154 154 154 154 154 154 154 154 154 154 154 154 154 154 154 154 154
- [415] 154 154 154 155 155 155 155 155 155 155 155 155 155 155 155 155 155 155
- [433] 155 155 155 155 155 155 155 155 156 156 156 156 156 156 156 156 156 156
- [451] 156 156 156 156 156 156 156 156 156 156 156 156 156 156 157 157 157 157
- [469] 157 157 157 157 157 157 157 157 157 157 157 157 157 157 157 157 157 157
- [487] 157 157 158 158 158 158 158 158 158 158 158 158 158 158 158 158 158 158
- [505] 158 158 158 158 158 158 158 158 159 159 159 159 159 159 159 159 159 159
- [523] 159 159 159 159 159 159 159 159 159 159 159 159 159 159 160 160 160 160
- [541] 160 160 160 160 160 160 160 160 160 160 160 160 160 160 160 160 160 160
- [559] 160 160 161 161 161 161 161 161 161 161 161 161 161 161 161 161 161 161
- [577] 161 161 161 161 161 161 161 162 162 162 162 162 162 162 162 162 162 162
- [595] 162 162 162 162 162 162 162 162 162 162 162 162 162 163 163 163 163 163
- [613] 163 163 163 163 163 163 163 163 163 163 163 163 163 163 163 163 163 163
- [631] 163 164 164 164 164 164 164 164 164 164 164 164 164 164 164 164 164 164
- [649] 164 164 164 164 164 164 164 165 165 165 165 165 165 165 165 165 165 165
- [667] 165 165 165 165 165 165 165 165 165 165 165 165 166 166 166 166 166 166
- [685] 166 166 166 166 166 166 166 166 166 166 166 166 166 166 166 166 166 166
- [703] 167 167 167 167 167 167 167 167 167 167 167 167 167 167 167 167 167 167
- [721] 167 167 167 167 167 167 168 168 168 168 168 168 168 168 168 168 168 168
- [739] 168 168 168 168 168 168 168 168 168 168 168 168 169 169 169 169 169 169
- [757] 169 169 169 169 169 169 169 169 169 169 169 169 169 169 169 169 169 170
- [775] 170 170 170 170 170 170 170 170 170 170 170 170 170 170 170 170 170 170
- [793] 170 170 170 170 170 171 171 171 171 171 171 171 171 171 171 171 171 171
- [811] 171 171 171 171 171 171 171 171 171 171 171 172 172 172 172 172 172 172
- [829] 172 172 172 172 172 172 172 172 172 172 172 172 172 172 172 172 172 173
- [847] 173 173 173 173 173 173 173 173 173 173 173 173 173 173 173 173 173 173
- [865] 173 173 173 173 173 174 174 174 174 174 174 174 174 174 174 174 174 174
- [883] 174 174 174 174 174 174 174 174 174 174 174 175 175 175 175 175 175 175
- [901] 175 175 175 175 175 175 175 175 175 175 175 175 175 175 175 175 176 176
- [919] 176 176 176 176 176 176 176 176 176 176 176 176 176 176 176 176 176 176
- [937] 176 176 176 176 177 177 177 177 177 177 177 177 177 177 177 177 177 177
- [955] 177 177 177 177 177 177 177 177 177 177 178 178 178 178 178 178 178 178
- [973] 178 178 178 178 178 178 178 178 178 178 178 178 178 178 178 178 179 179
- [991] 179 179 179 179 179 179 179 179 179 179</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>sigma.list <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">seq</span>( <span class="at">from=</span><span class="dv">6</span> , <span class="at">to=</span><span class="dv">10</span> , <span class="at">length.out=</span><span class="dv">1000</span> ), <span class="dv">4</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>( <span class="at">mu=</span>mu.list , <span class="at">sigma=</span>sigma.list )</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(post)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="rethinking_ch4_cache/html/unnamed-chunk-22_591aed4cd7d6b63f02de4df150462733">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>mu.list <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">seq</span>( <span class="at">from=</span><span class="dv">137</span>, <span class="at">to=</span><span class="dv">179</span> , <span class="at">length.out=</span><span class="dv">1000</span> ),<span class="dv">2</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">#mu.list</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>sigma.list <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">seq</span>( <span class="at">from=</span><span class="dv">6</span> , <span class="at">to=</span><span class="dv">10</span> , <span class="at">length.out=</span><span class="dv">1000</span> ), <span class="dv">4</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>( <span class="at">mu=</span>mu.list , <span class="at">sigma=</span>sigma.list )</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(post)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   mu sigma
 1 137     6
@@ -554,18 +503,18 @@ X1    1 352  155 7.74    154     154 8.47 137 179  42.5 0.15    -0.51 0.41</code
 5 137     6
 6 137     6</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>post<span class="sc">$</span>LL <span class="ot">&lt;-</span> <span class="fu">sapply</span>( <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(post) , <span class="cf">function</span>(i) <span class="fu">sum</span>(</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>( d2<span class="sc">$</span>height , post<span class="sc">$</span>mu[i] , post<span class="sc">$</span>sigma[i] , <span class="at">log=</span><span class="cn">TRUE</span> ) ) )</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(post, <span class="fu">aes</span>(mu, LL)) <span class="sc">+</span> </span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">155</span>, <span class="at">color=</span><span class="st">"darkgoldenrod2"</span>, <span class="at">alpha=</span>.<span class="dv">5</span>, <span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">alpha=</span>.<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>post<span class="sc">$</span>LL <span class="ot">&lt;-</span> <span class="fu">sapply</span>( <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(post) , <span class="cf">function</span>(i) <span class="fu">sum</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>( d2<span class="sc">$</span>height , post<span class="sc">$</span>mu[i] , post<span class="sc">$</span>sigma[i] , <span class="at">log=</span><span class="cn">TRUE</span> ) ) )</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(post, <span class="fu">aes</span>(mu, LL)) <span class="sc">+</span> </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">155</span>, <span class="at">color=</span><span class="st">"darkgoldenrod2"</span>, <span class="at">alpha=</span>.<span class="dv">5</span>, <span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">"dodgerblue2"</span>, <span class="at">alpha=</span>.<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="rethinking_ch4_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="576"></p>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>post<span class="sc">$</span>prod <span class="ot">&lt;-</span> post<span class="sc">$</span>LL <span class="sc">+</span> <span class="fu">dnorm</span>( post<span class="sc">$</span>mu , <span class="dv">178</span> , <span class="dv">20</span> , <span class="cn">TRUE</span> ) <span class="sc">+</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dunif</span>( post<span class="sc">$</span>sigma , <span class="dv">0</span> , <span class="dv">50</span> , <span class="cn">TRUE</span> )</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>post<span class="sc">$</span>prob <span class="ot">&lt;-</span> <span class="fu">exp</span>( post<span class="sc">$</span>prod <span class="sc">-</span> <span class="fu">max</span>(post<span class="sc">$</span>prod) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>post<span class="sc">$</span>prod <span class="ot">&lt;-</span> post<span class="sc">$</span>LL <span class="sc">+</span> <span class="fu">dnorm</span>( post<span class="sc">$</span>mu , <span class="dv">178</span> , <span class="dv">20</span> , <span class="cn">TRUE</span> ) <span class="sc">+</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dunif</span>( post<span class="sc">$</span>sigma , <span class="dv">0</span> , <span class="dv">50</span> , <span class="cn">TRUE</span> )</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>post<span class="sc">$</span>prob <span class="ot">&lt;-</span> <span class="fu">exp</span>( post<span class="sc">$</span>prod <span class="sc">-</span> <span class="fu">max</span>(post<span class="sc">$</span>prod) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 

@@ -13,7 +13,7 @@ lapply(smallBase, library, character.only=T)
 font_add_google("Open Sans", "sans-serif")
 #?font_add_google
 
-options(digits=3, scipen=6)
+options(digits=6, scipen=6)
 
 base <- theme_bw() +  theme(panel.grid.minor.x=element_blank(),
                               panel.grid.minor.y=element_blank(),

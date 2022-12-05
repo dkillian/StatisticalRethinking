@@ -16,7 +16,7 @@ unnamed-chunk-15	aes	data.frame	geom_density	ggplot	log	prod	replicate	runif	x
 unnamed-chunk-16	data	Howell1	rm	str
 unnamed-chunk-17	d	precis
 unnamed-chunk-18	%>%	>=	aes	age	d	filter	geom_density	ggplot	height
-unnamed-chunk-19	c	dnorm	element_blank	geom_function	ggplot	list	scale_x_continuous	seq	theme	xlim
+unnamed-chunk-19	aes	c	d2	dnorm	element_blank	geom_density	geom_function	ggplot	height	list	scale_x_continuous	seq	theme	xlim
 unnamed-chunk-20	dunif	element_blank	geom_function	ggplot	list	theme	xlim
 unnamed-chunk-21	$	d2	describe
 unnamed-chunk-22	$	$<-	aes	d2	dnorm	dunif	exp	expand.grid	geom_line	geom_vline	ggplot	head	LL	max	mu	nrow	round	sapply	seq	sum

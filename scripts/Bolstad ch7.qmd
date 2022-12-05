@@ -1,0 +1,267 @@
+---
+title: "Bayesian inference normal mean"
+subtitle: "Notes for Bolstad (2011) Chapter 11"
+author: "Dan Killian"
+toc: true
+toc-depth: 3
+number-sections: false
+format: 
+  html:
+    code-fold: false
+editor: visual
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+library(here)
+source("prep.R")
+```
+
+## A single normal observation
+
+We are going to take a single observation from the conditional density $f(y|\mu)$, that is known to be normally distributed with variance \$\\sigma\^2\$. To keep the illustration tractable, we stipulate *m* possible values for $\mu$, $\mu_1…\mu_m$. We assign a uniform prior probability for these possible values.
+
+The likelihood is the joint density of a data point *y* and the candidate value $\mu$. The posterior is proportional to the prior (probability) times the likelihood:
+
+$g(\mu|y)=\frac{prior\times likelihood}{\sum{prior\times likelihood}}$
+
+The full density of a normal distribution is:
+
+$f(y|\mu)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2\sigma2}(y-\mu)^2}$
+
+Which we can reduce down to a factor of proportionality:
+
+$f(y|\mu)\propto  e^{-\frac{1}{2\sigma2}(y-\mu)^2}$
+
+We establish a known variance of 1, and an observed value of y=3.2. We set up a table to capture calculations for each of the candidate values of $\mu$.
+
+```{r}
+
+tab <- data.frame(mu=c(2,2.5,3,3.5,4),
+                  pr_p=.2) %>%
+  mutate(lik=dnorm(mu, 3.2,1),
+         unstd_post=pr_p*lik,
+         post=unstd_post/sum(unstd_post),
+         lik2 = exp( -.5*(3.2-mu)^2),
+         unstd_post2=pr_p*lik2,
+         post2=unstd_post2/sum(unstd_post2))
+
+gt(tab)
+
+```
+
+```{r}
+ggplot(tab, aes(mu, post)) + 
+  geom_line()
+```
+
+```{r}
+ggplot(tab, aes(mu, post2)) + 
+  geom_line()
+```
+
+## A sample of draws from a normal distribution
+
+Instead of a single draw, let's consider a random sample of draws $y_1…y_n$. The draws are i.i.d, so the joint likelihood is the product of the likelihood for each draw of the sample. So now suppose we have a sample of four draws: 3.2, 2.2, 3.6, and 4.1. We can either proceed sequentially, updating the prior each time, or we can plug in the sample mean and take its likelihood.
+
+```{r}
+
+samp <- mean(c(3.2,2.2,3.6, 4.1))
+
+tab2 <- data.frame(mu=c(2,2.5,3,3.5,4),
+                  pr_p=.2) %>%
+  mutate(lik=dnorm(mu, 3.275,1),
+         unstd_post=pr_p*lik,
+         post=unstd_post/sum(unstd_post),
+         lik2 = exp( -.5*(3.275-mu)^2),
+         unstd_post2=pr_p*lik2,
+         post2=unstd_post2/sum(unstd_post2))
+
+gt(tab2)
+
+```
+
+```{r}
+ggplot(tab2, aes(mu, post)) +
+  geom_line()
+```
+
+## Incorporating McElreath
+
+Plugging in the sample mean is unsatisfying. Let's see if we can incorporate McElreath here. In Chapter 4, he has a normal model where he specifies a single prior, which doesn't seem to square with how we did the previous exercise. We'll set our prior as 3, and maintain our known variance of 1. We'll feed the data a grid of possible mean values across the range of the data. Note that we also know the mean of the sample is 3.275.
+
+```{r}
+
+tab3 <- data.frame(y=c(3.2,2.2,3.6, 4.1, 2.8)) 
+tab3
+
+describe(tab3)
+
+```
+
+```{r}
+
+cand <- data.frame(mu=round(seq(2.2, 4.1, .001),4)) %>%
+  mutate(lik=sapply(
+    1:nrow(cand), function(i) {
+      sum(dnorm(tab3$y, mu[i], 1, log=T))
+      }
+    ),
+    lik_prob = lik/sum(lik),
+    pr_lik=sapply(
+      1:nrow(cand), function(i) {
+        sum(dnorm(cand$mu[i], 2.3,1, log=T)) # likelihood of prior over grid values
+      }
+    ),
+    pr_lik_prob=pr_lik/sum(pr_lik),
+    unstd_post = lik + pr_lik,
+    post= unstd_post / sum(unstd_post),# doesn't work
+    post=exp(unstd_post-max(unstd_post)))
+
+```
+
+
+```{r}
+
+max(cand$lik)
+
+cand %>%
+  filter(lik==max(lik))
+
+ggplot(cand, aes(x=mu)) + 
+  geom_vline(xintercept=3.18) +
+  geom_line(aes(y=lik)) 
+  #geom_line(aes(y=pr_lik))
+
+```
+
+
+```{r}
+
+cand %>%
+  filter(pr_lik==max(cand$pr_lik))
+
+ggplot(cand, aes(x=mu)) + 
+  geom_vline(xintercept=2.3) +
+#  geom_line(aes(y=lik)) +
+  geom_line(aes(y=pr_lik))
+
+
+```
+
+
+```{r}
+
+ggplot(cand, aes(x=mu)) + 
+#  geom_vline(xintercept=3.18) +
+#  geom_line(aes(y=lik)) +
+  geom_line(aes(y=unstd_post))
+
+
+```
+
+```{r}
+
+cand %>%
+  filter(unstd_post==max(unstd_post))
+
+ggplot(cand, aes(x=mu)) + 
+  geom_vline(xintercept=3.18, color="firebrick2", size=1, alpha=.6) +
+  geom_line(aes(y=lik, color="Likelihood of data"), size=1, alpha=.6) +
+  geom_vline(xintercept=3.033, color="darkgreen", size=1, alpha=.6) +
+  geom_line(aes(y=unstd_post, color="Posterior"), size=1, alpha=.6)  +
+  geom_vline(xintercept=2.3, color="dodgerblue2", size=1, alpha=.6) +
+  geom_line(aes(y=pr_lik, color="Prior"), size=1, alpha=.6) +
+  scale_color_manual(values=c("Likelihood of data"="firebrick2",
+                              "Posterior"="darkgreen",
+                              "Prior"="dodgerblue2")) +
+  scale_x_continuous(limits=c(2.2, 4.1),
+                     breaks=seq(2.2, 4.1, .2)) +
+  theme(axis.ticks.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.y=element_blank(),
+        legend.title=element_blank()) +
+  labs(x="Candidate values for mean",
+       title="Normal model grid search for\nvalues 2.2, 2.8, 3.2, 3.6, 4.1",
+       caption="Likelihood found the sample\nmean, but prior pushed it back")
+
+ggsave(here("viz/Chapter 4/My own go at grid search for normal model.png"),
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+```
+
+```{r}
+
+?slice_sample
+
+samples <- cand %>%
+  slice_sample(n=1e4, weight_by=post, replace=T) %>%
+  select(mu)
+
+describe(samples)
+
+```
+
+
+
+```{r}
+
+ggplot(cand, aes(x=mu)) + 
+#  geom_vline(xintercept=3.18) +
+#  geom_line(aes(y=lik)) +
+  geom_line(aes(y=pr_lik_prob)) +
+  geom_line(aes(y=lik_prob)) +
+  geom_line(aes(y=post))
+
+
+```
+
+
+
+
+dnorm(3.2, 2.2, 1)    
+dnorm(2.2, 2.2, 1)
+sum(dnorm(tab3$y, 2.2,1)) # vectorized calculations
+sum(dnorm(tab3$y, 2.201,1)) 
+
+
+sum(dnorm(tab3$y, 2.2,1))
+    
+
+%>%
+  mutate(lik = sapply(1:nrow(cand), function(i) {
+    sum(dnorm(y[i], 1))
+  }))
+           
+           dnorm(mu, 3.275,1),
+         unstd_post=pr_p*lik,
+         post=unstd_post/sum(unstd_post),
+         lik2 = exp( -.5*(3.275-mu)^2),
+         unstd_post2=pr_p*lik2,
+         post2=unstd_post2/sum(unstd_post2))
+gt(tab3)
+```
+
+### A single normal observation
+
+```{r}
+
+```
+
+| $\mu$ | Pr(p) | Likelihood | Prior x Likelihood | Posterior |
+|-------|-------|------------|--------------------|-----------|
+| 2     | .2    |            |                    |           |
+| 2.5   | .2    |            |                    |           |
+| 3     | .2    |            |                    |           |
+| 3.5   | .2    |            |                    |           |
+| 4     | .2    |            |                    |           |
+
+```{r}
+
+```
