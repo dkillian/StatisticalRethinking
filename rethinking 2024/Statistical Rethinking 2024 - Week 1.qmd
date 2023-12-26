@@ -1,0 +1,22 @@
+---
+title: "Statistical Rethinking 2024"
+subtitle: "Week 1 lecture notes"
+date: Jan 5 2024
+toc: true
+toc-depth: 4
+number-sections: false
+format:
+  html:
+    code-fold: true
+    page-layout: full
+editor: visual
+reference-location: margin
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+library(here)
+library(knitr)
+source("prep.r")
+```
+
+Hullo!
