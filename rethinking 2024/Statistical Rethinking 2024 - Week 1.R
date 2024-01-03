@@ -90,7 +90,18 @@ ggplot(tab_post)
 plot(tab_post)
 for ( i in 0:10 ) lines(c(i,i),c(0,tab_post[i+1]),lwd=4,col=4)
 
+# inference for a proportion - FREQUENTIST ---- 
 
 
-  
-  
+# inference for a proportion - BAYES ---- 
+
+
+p <- seq(.1,.9, .1)  
+p  
+
+prior <- c(rep(.06,4), .52, rep(.06,4))
+prior
+
+lik <- dbinom(4,20,p)
+lik
+
