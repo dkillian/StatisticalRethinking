@@ -6,7 +6,7 @@ toc: true
 toc-depth: 4
 number-sections: false
 format:
-  html:
+  pdf:
     code-fold: false
     page-layout: full
 editor: visual

@@ -167,9 +167,9 @@ For any events that occur during this period, what is the probability *p* that t
 
 *p* = probability of the event originating from the treatment group
 
-$H_0: p=50\%$ The event is equally likely to have occurred in the treatment or control group, signifying no treatment effect
+Null hypothesis: p = 50%. The event is equally likely to have occurred in the treatment or control group, signifying no treatment effect
 
-$H_1: p \lt 50\%$ The event is less likely to have come from the treatment group than the control group, signifying a treatment effect
+Alternative hypothesis: p\<50%. The event is less likely to have come from the treatment group than the control group, signifying a treatment effect
 
 For the period under observation, there were 20 events - 4 events in the treatment group and 16 events in the control group.
 
@@ -443,3 +443,63 @@ If ordering does matter, then there are $\binom{N}{K}=\frac{P(N,K)}{K!}=\frac{N!
 ### Randomization inference
 
 Permutations may be used to generate test statistics.
+
+## Homework
+
+1.  Suppose the globe tossing data had turned out to be 3 water and 11 land. Construct the posterior distribution.
+
+    Slide 50 starts coding the estimator using the example of a single sample of 6 waters and 3 lands.
+
+    Slide 53 provides a function to simulate a set of globe tosses of any probability and number of tosses.
+
+    Slide 59 provides a function to compute the posterior, that includes the simulation function as an argument.
+
+    Slide 90 simulates the posterior predictive distribution
+
+    In reviewing this code, note that the simulation will give you a probabilistic response, while the homework establishes an exact sample of 3 water and 11 land. Let's modify the code on slide 59 to accept this exact sample.
+
+    ```{r}
+
+    compute_posterior <- function(W, L,
+                                  poss=seq(0,1,len=11)) {
+      ways <- sapply(poss, function(q) (q*4)^W * (1-q)*4^L)
+      post <- ways/sum(ways)
+      bars <- sapply(post, function(q) make_bar(q))
+      data.frame(poss, ways, post, bars)
+    }  
+
+    out <- compute_posterior(W=3,
+                      L=11)
+    flextable(out)
+
+    ```
+
+    Just like the example above, plot the posterior distribution
+
+    ```{r}
+    ggplot(out, aes(x=poss)) + 
+      geom_col(aes(y=post),
+               width=.05,
+               color="blue",
+               fill="dodgerblue2",
+               alpha=.6) + 
+      # geom_col(aes(y=prior),
+      #          width=.05,
+      #          color="green",
+      #          fill="lightgreen",
+      #          alpha=.6) + 
+      scale_x_continuous(breaks=seq(0,1,.1),
+                         labels=percent_format(accuracy=1)) + 
+      scale_y_continuous(limits=c(0,.21),
+                         breaks=seq(0,.2,.05),
+                         labels=percent_format(accuracy=1)) +
+      labs(x="Candidate model value",
+           y="Probability",
+           title="Posterior distribution") +
+      theme(axis.title.y=element_text(angle=0, vjust=.55))
+
+    #,
+    #        plot.title=element_markdown())
+    ```
+
+2.  Using the posterior distribution from 1, compute the posterior predictive distribution for the next 5 tosses of the same globe. Use the sampling method.
