@@ -167,7 +167,9 @@ For any events that occur during this period, what is the probability *p* that t
 
 *p* = probability of the event originating from the treatment group
 
-Null hypothesis: p = 50%. The event is equally likely to have occurred in the treatment or control group, signifying no treatment effect
+$H_0: p=50\%$ The event is equally likely to have occurred in the treatment or control group, signifying no treatment effect
+
+$H_1: p \lt 50\%$ The event is equally likely to have occurred in the treatment or control group, signifying no treatment effect
 
 Alternative hypothesis: p\<50%. The event is less likely to have come from the treatment group than the control group, signifying a treatment effect
 
@@ -262,11 +264,6 @@ The last step is to normalize our numerator values into a set of probabilities.
 ```{r}
 denominator <- sum(numerator)
 
-```
-
-And then we finish the calculation to get our posterior distribution.
-
-```{r}
 posterior <- numerator / denominator
 
 posterior %>%
@@ -276,25 +273,15 @@ posterior %>%
 Let's put all this together in a summary table.
 
 ```{r}
-# out <- data.frame(rbind(prior, likelihood, numerator, posterior)) %>%
-#   set_names(nm=c("10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%")) %>%
-#   round(3) %>%
-#   mutate(metric=c("prior","likelihood","likelihood*prior", "posterior")) %>%
-#   relocate(metric, .before=1)
-# 
-# flextable(out)
-```
 
-```{r}
-
-ot <- data.frame(p, likelihood, prior, numerator, posterior) %>%
+out <- data.frame(p, likelihood, prior, numerator, posterior) %>%
   round(3)
 
-flextable(ot)
+flextable(out)
 ```
 
 ```{r}
-ggplot(ot, aes(x=p)) + 
+ggplot(out, aes(x=p)) + 
   geom_col(aes(y=posterior),
            width=.05,
            color="blue",
@@ -497,9 +484,6 @@ Permutations may be used to generate test statistics.
            y="Probability",
            title="Posterior distribution") +
       theme(axis.title.y=element_text(angle=0, vjust=.55))
-
-    #,
-    #        plot.title=element_markdown())
     ```
 
 2.  Using the posterior distribution from 1, compute the posterior predictive distribution for the next 5 tosses of the same globe. Use the sampling method.
