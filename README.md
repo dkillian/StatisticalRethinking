@@ -7,8 +7,7 @@ notes from McElreath's text Statistical Rethinking
 
 [Chapter 4](https://dkillian.github.io/StatisticalRethinking/scripts/rethinking_ch4.html)
 
-[Week 1](https://dkillian.github.io/StatisticalRethinking/rethinking%202024/Statistical%20Rethinking%202024%20-%20Week%201%20supplementary%20notes.html)
+[Chapter 8](https://dkillian.github.io/StatisticalRethinking/scripts/rethinking_ch8.html)
 
-
-[Week 1](https://dkillian.github.io/StatisticalRethinking/rethinking%202024/rethinking2024wk1.html)
+[Chapter 13](https://dkillian.github.io/StatisticalRethinking/scripts/rethinking_ch13.html)
 
