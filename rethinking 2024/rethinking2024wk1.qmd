@@ -6,7 +6,7 @@ toc: true
 toc-depth: 4
 number-sections: false
 format:
-  html:
+  docx:
     code-fold: false
     page-layout: full
 editor: visual
@@ -346,10 +346,8 @@ Note that this is *n(n-1)(n-2)... = n!*
 What if there is repetition in the orderings? How many different ordered arrangements are possible with the sequence s, e, l, l?
 
 ```{r}
-here()
 
 include_graphics("perms with dupes.png")
-
 
 ```
 
@@ -420,7 +418,7 @@ You could also do a brute force example:
 How many groups of three can be formed from the letters a, b, c, d?
 
 ```{r}
-include_graphics("comb2.png")
+include_graphics("combinations.png")
 ```
 
 There are *4!=24* possible permutations
@@ -435,11 +433,7 @@ Permutations may be used to generate test statistics.
 
 ## Homework
 
-1.  Suppose the globe tossing data had turned out to be 3 water and 11 land
-
-2.  
-
-3.  [here](https://www.coursera.org/learn/bayesian/lecture/cOdqz/inference-for-a-proportion-bayesian-approach). Construct the posterior distribution.
+1.  Suppose the globe tossing data had turned out to be 3 water and 11 land. Construct the posterior distribution.
 
     Slide 50 starts coding the estimator using the example of a single sample of 6 waters and 3 lands.
 
@@ -476,11 +470,6 @@ Permutations may be used to generate test statistics.
                color="blue",
                fill="dodgerblue2",
                alpha=.6) + 
-      # geom_col(aes(y=prior),
-      #          width=.05,
-      #          color="green",
-      #          fill="lightgreen",
-      #          alpha=.6) + 
       scale_x_continuous(breaks=seq(0,1,.1),
                          labels=percent_format(accuracy=1)) + 
       scale_y_continuous(limits=c(0,.4),
@@ -492,7 +481,7 @@ Permutations may be used to generate test statistics.
       theme(axis.title.y=element_text(angle=0, vjust=.55))
     ```
 
-4.  Using the posterior distribution from 1, compute the posterior predictive distribution for the next 5 tosses of the same globe. Use the sampling method.
+2.  Using the posterior distribution from 1, compute the posterior predictive distribution for the next 5 tosses of the same globe. Use the sampling method.
 
     The posterior predictive distribution is an extraction of data - a simulation - using the probabilities of the posterior distribution. We then examine that posterior predictive distribution to make descriptive statements about our questions of interest.
 
@@ -504,7 +493,7 @@ post_samples <- rbeta(1e4, 3+1, 11+1)
 
 ggplot(data.frame(x=post_samples), aes(x)) + 
   geom_vline(xintercept=c(mean(post_samples), median(post_samples)), color=c("darkgoldenrod2", "green"),
-             size=1) +
+             linewidth=1) +
   geom_density(color="blue",
                fill="dodgerblue2",
                size=.8,
