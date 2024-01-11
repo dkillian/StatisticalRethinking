@@ -169,9 +169,7 @@ For any events that occur during this period, what is the probability *p* that t
 
 $H_0: p=50\%$ The event is equally likely to have occurred in the treatment or control group, signifying no treatment effect
 
-$H_1: p \lt 50\%$ The event is equally likely to have occurred in the treatment or control group, signifying no treatment effect
-
-Alternative hypothesis: p\<50%. The event is less likely to have come from the treatment group than the control group, signifying a treatment effect
+$H_1: p \lt 50\%$ The event is less likely to have come from the treatment group than the control group, signifying a treatment effect
 
 For the period under observation, there were 20 events - 4 events in the treatment group and 16 events in the control group.
 
@@ -477,8 +475,8 @@ Permutations may be used to generate test statistics.
       #          alpha=.6) + 
       scale_x_continuous(breaks=seq(0,1,.1),
                          labels=percent_format(accuracy=1)) + 
-      scale_y_continuous(limits=c(0,.21),
-                         breaks=seq(0,.2,.05),
+      scale_y_continuous(limits=c(0,.4),
+                         breaks=seq(0,.4,.05),
                          labels=percent_format(accuracy=1)) +
       labs(x="Candidate model value",
            y="Probability",
@@ -521,7 +519,7 @@ Now that we have our posterior predictive distribution, we can predict the proba
 W_sim <- rbinom(1e4, size=5, p=post_samples)
 
 ggplot(data.frame(x=W_sim), aes(x)) + 
-  geom_bar(width=.4,
+  geom_bar(width=.2,
            color="blue",
            fill="dodgerblue2",
            alpha=.6) +
