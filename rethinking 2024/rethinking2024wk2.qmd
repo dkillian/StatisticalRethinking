@@ -1,0 +1,142 @@
+---
+title: "Statistical Rethinking 2024"
+subtitle: "Week 2 lecture notes"
+date: Jan 16 2024
+toc: true
+toc-depth: 4
+number-sections: false
+format:
+  html:
+    code-fold: false
+    page-layout: full
+editor: visual
+reference-location: margin
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+library(here)
+library(knitr)
+source("../scripts/prep.r")
+```
+
+## Linear regression as an Owl
+
+```{r}
+data(Howell1)
+d <- Howell1 %>%
+  filter(age>17)
+```
+
+## Bayes' Rule as a regression
+
+### Bayesian regression through grid approximation
+
+```{r}
+
+mu.list <- seq( from=150, to=160 , length.out=100 )
+
+frq(mu.list)
+
+```
+
+```{r}
+
+sigma.list <- seq( from=7 , to=9 , length.out=100 )
+
+frq(sigma.list)
+
+```
+
+```{r}
+
+post <- expand.grid( mu=mu.list , sigma=sigma.list )
+
+post %>%
+  head() %>%
+  flextable()
+
+```
+
+```{r}
+
+ht <- 152
+mu <- 150
+sig <- 7
+
+post <- post %>%
+  mutate(ll152 = dnorm(ht, mu, sig, log=T))
+
+psych::describe(post)
+
+```
+
+```{r}
+ggplot(post, aes(ll152)) + 
+  geom_vline(xintercept=max(post$ll152)) +
+  geom_density()
+```
+
+```{r}
+
+tll <- sum(post$ll152) 
+
+```
+
+The log likelihood for the particular parameter value of mu=150 and sigma=7, for the datum of height=152, is -30,434.
+
+```{r}
+
+d <- d %>%
+  mutate(ll150_7=dnorm(height, mu, sig, log=T)) 
+
+d %>%
+  head() %>%
+  flextable()
+
+
+```
+
+```{r}
+sum(d$ll150_7)
+```
+
+```{r}
+
+# textbook code
+
+#post$LL <- sapply( 1:nrow(post) , function(i) sum(
+#  dnorm( d$height , post$mu[i] , post$sigma[i] , log=TRUE ) ) )
+
+```
+
+```{r}
+
+post <- post %>%
+  mutate(LL = sapply(1:nrow(post), function(i) 
+    dnorm(d$height, 
+          post$mu[i], 
+          post$sigma[i], 
+          log=T) %>%
+      sum() 
+  )) 
+
+```
+
+```{r}
+
+post %>%
+  head() %>%
+  flextable()
+
+```
+
+```{r}
+
+post$prod <- post$LL + dnorm( post$mu , 178 , 20 , TRUE ) +
+  dunif( post$sigma , 0 , 50 , TRUE )
+
+```
+
+```{r}
+post$prob <- exp( post$prod - max(post$prod) )
+```

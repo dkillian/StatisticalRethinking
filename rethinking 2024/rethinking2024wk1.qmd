@@ -6,7 +6,7 @@ toc: true
 toc-depth: 4
 number-sections: false
 format:
-  docx:
+  html:
     code-fold: false
     page-layout: full
 editor: visual
@@ -496,7 +496,7 @@ ggplot(data.frame(x=post_samples), aes(x)) +
              linewidth=1) +
   geom_density(color="blue",
                fill="dodgerblue2",
-               size=.8,
+               linewidth=.8,
                alpha=.4) +
   scale_x_continuous(limits=c(0,1),
                      breaks=seq(0,1,.1),
