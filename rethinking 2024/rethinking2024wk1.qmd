@@ -179,7 +179,7 @@ How likely are these four events to have occurred within the treatment group?
 
 Background video for this example may be found [here](https://www.coursera.org/learn/bayesian/lecture/fVGe0/inference-for-a-proportion-frequentist-approach)
 
-[herethere](https://www.coursera.org/learn/bayesian/lecture/cOdqz/inference-for-a-proportion-bayesian-approach)We may consider the twenty events as the number of trials, and the four events in the treatment group as the number of 'successes' of these 20 trials.
+We may consider the twenty events as the number of trials, and the four events in the treatment group as the number of 'successes' of these 20 trials.
 
 ```{r}
 dbinom(x=0:4, # we consider the probabilities for all possibilities up to four 
