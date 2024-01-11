@@ -177,7 +177,9 @@ How likely are these four events to have occurred within the treatment group?
 
 ### Frequentist
 
-We may consider the twenty events as the number of trials, and the four events in the treatment group as the number of 'successes' of these 20 trials.
+Background video for this example may be found [here](https://www.coursera.org/learn/bayesian/lecture/fVGe0/inference-for-a-proportion-frequentist-approach)
+
+[herethere](https://www.coursera.org/learn/bayesian/lecture/cOdqz/inference-for-a-proportion-bayesian-approach)We may consider the twenty events as the number of trials, and the four events in the treatment group as the number of 'successes' of these 20 trials.
 
 ```{r}
 dbinom(x=0:4, # we consider the probabilities for all possibilities up to four 
@@ -191,6 +193,8 @@ The probability of observing four or fewer pregnancies, under an assumption of n
 The probability is less than 5%. By convention, we reject the null hypothesis and consider this 'failure to reject' to be a piece of evidence in support of the alternative hypothesis.
 
 ### Bayesian
+
+Background video for this example may be found [here](https://www.coursera.org/learn/bayesian/lecture/cOdqz/inference-for-a-proportion-bayesian-approach)
 
 Recall Bayes' Rule:
 
@@ -431,7 +435,11 @@ Permutations may be used to generate test statistics.
 
 ## Homework
 
-1.  Suppose the globe tossing data had turned out to be 3 water and 11 land. Construct the posterior distribution.
+1.  Suppose the globe tossing data had turned out to be 3 water and 11 land
+
+2.  
+
+3.  [here](https://www.coursera.org/learn/bayesian/lecture/cOdqz/inference-for-a-proportion-bayesian-approach). Construct the posterior distribution.
 
     Slide 50 starts coding the estimator using the example of a single sample of 6 waters and 3 lands.
 
@@ -484,7 +492,7 @@ Permutations may be used to generate test statistics.
       theme(axis.title.y=element_text(angle=0, vjust=.55))
     ```
 
-2.  Using the posterior distribution from 1, compute the posterior predictive distribution for the next 5 tosses of the same globe. Use the sampling method.
+4.  Using the posterior distribution from 1, compute the posterior predictive distribution for the next 5 tosses of the same globe. Use the sampling method.
 
     The posterior predictive distribution is an extraction of data - a simulation - using the probabilities of the posterior distribution. We then examine that posterior predictive distribution to make descriptive statements about our questions of interest.
 
