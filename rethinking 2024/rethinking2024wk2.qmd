@@ -106,11 +106,16 @@ psych::describe(post)
 ```
 
 ```{r}
+head(post)
+```
+
+```{r}
 
 ggplot(post, aes(mu, ll152)) + 
   geom_vline(xintercept=152, color="darkgoldenrod2", linewidth=1) +
   stat_smooth() +
-  scale_x_continuous(breaks=150:160)
+  scale_x_continuous(#limits=c(140,160),
+                     breaks=140:160)
 
 ```
 
