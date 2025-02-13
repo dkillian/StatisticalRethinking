@@ -11,3 +11,6 @@ notes from McElreath's text Statistical Rethinking
 
 [Chapter 13](https://dkillian.github.io/StatisticalRethinking/scripts/rethinking_ch13.html)
 
+[Week 1](https://dkillian.github.io/StatisticalRethinking/rethinking%202024/rethinking2024wk1.html)
+
+[The Good King Markov](https://dkillian.github.io/StatisticalRethinking/rethinking%202024/Good%20King%20Markov2.html)
