@@ -146,8 +146,8 @@ Time to flip the coin
 ```{r}
 
 current <- ifelse(runif(1) < prob_move, # take a random draw of any number between 0-1 
-                  proposal, # if random draw is greater than the probability of acceptance, accept
-                  current) # if random draw is less than probability of acceptance, reject
+                  proposal, # if random draw is within the probability of acceptance, accept
+                  current) # if random draw is outside the probability of acceptance, reject
 current
 
 ```
