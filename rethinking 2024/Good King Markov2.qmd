@@ -154,7 +154,7 @@ current
 
 We reject the proposal! We started on island 4, and for our first visit we stay on island 4
 
-Let's do this a few more times
+Let's repeat the steps
 
 ```{r}
 
@@ -173,9 +173,13 @@ current
 
 ```
 
+The proposal was again to move to island 3, which means that under Step 2 the proposal is rejected. Under Step 3, the proposal was accepted and King Markov jumped from island 4 to island 3.
+
+Repeat the steps a few more times and take note of the results of the proposals
+
 ### Step 4
 
-Let's repeat these steps many times using simulation
+Now let's repeat these steps many times using simulation
 
 ```{r}
 
