@@ -10,13 +10,13 @@ Hbar <- mean(d2$height)
 dat <- list(W=d2$weight,H=d2$height,Hbar=Hbar)
 
 m1 <- quap(
-  alist(
-    W ~ dnorm( mu , sigma ) ,
-    mu <- a + b*( H - Hbar ) ,
-    a ~ dnorm( 60 , 10 ) ,
-    b ~ dlnorm( 0 , 1 ) ,
-    sigma ~ dunif( 0 , 10 )
-  ) , data=dat )
+    alist(
+        W ~ dnorm( mu , sigma ) ,
+        mu <- a + b*( H - Hbar ) ,
+        a ~ dnorm( 60 , 10 ) ,
+        b ~ dlnorm( 0 , 1 ) ,
+        sigma ~ dunif( 0 , 10 )
+    ) , data=dat )
 
 dat2 <- list( H=c(140,160,175,100) , Hbar=Hbar )
 h_sim <- sim( m1 , data=dat2 )
@@ -42,13 +42,13 @@ plot( NULL , xlim=range(d$age) , ylim=range(d$weight) )
 for ( i in 1:n ) abline( a[i] , b[i] , lwd=3 , col=2 )
 
 m2 <- quap(
-  alist(
-    W ~ dnorm( mu , sigma ),
-    mu <- a + b*A,
-    a ~ dnorm(5,1),
-    b ~ dlnorm(0,1),
-    sigma ~ dexp(1)
-  ), data=list(W=d$weight,A=d$age) )
+    alist(
+        W ~ dnorm( mu , sigma ),
+        mu <- a + b*A,
+        a ~ dnorm(5,1),
+        b ~ dlnorm(0,1),
+        sigma ~ dexp(1)
+    ), data=list(W=d$weight,A=d$age) )
 
 precis(m2)
 
@@ -67,13 +67,13 @@ d <- d[ d$age < 13 , ]
 dat <- list(W=d$weight,A=d$age,S=d$male+1)
 
 m3 <- quap(
-  alist(
-    W ~ dnorm( mu , sigma ),
-    mu <- a[S] + b[S]*A,
-    a[S] ~ dnorm(5,1),
-    b[S] ~ dlnorm(0,1),
-    sigma ~ dexp(1)
-  ), data=dat )
+    alist(
+        W ~ dnorm( mu , sigma ),
+        mu <- a[S] + b[S]*A,
+        a[S] ~ dnorm(5,1),
+        b[S] ~ dlnorm(0,1),
+        sigma ~ dexp(1)
+    ), data=dat )
 
 # blank(bty="n")
 plot( d$age , d$weight , lwd=3, col=ifelse(d$male==1,4,2) , xlab="age (years)" , ylab="weight (kg)" )
@@ -99,7 +99,7 @@ for ( i in 1:13 ) mu_contrast[,i] <- mu2[,i] - mu1[,i]
 plot( NULL , xlim=c(0,13) , ylim=c(-15,15) , xlab="age" , ylab="weight difference (boys-girls)" )
 
 for ( p in c(0.5,0.67,0.89,0.99) )
-  shade( apply(mu_contrast,2,PI,prob=p) , Aseq )
+shade( apply(mu_contrast,2,PI,prob=p) , Aseq )
 
 abline(h=0,lty=2,lwd=2)
 
@@ -112,7 +112,7 @@ d <- Oxboys
 
 d$delta <- NA
 for ( i in 1:nrow(d) ) {
-  if ( d$Occasion[i] > 1 ) d$delta[i] <- d$height[i] - d$height[i-1]
+    if ( d$Occasion[i] > 1 ) d$delta[i] <- d$height[i] - d$height[i-1]
 }
 d <- d[ !is.na(d$delta) , ]
 
@@ -125,11 +125,11 @@ dens(delta_sim)
 
 # the model
 m4 <- quap(
-  alist(
-    delta ~ dlnorm( alpha , sigma ),
-    alpha ~ dnorm( 0 , 0.1 ),
-    sigma ~ dexp( 3 )
-  ), data=list(delta=d$delta) )
+    alist(
+        delta ~ dlnorm( alpha , sigma ),
+        alpha ~ dnorm( 0 , 0.1 ),
+        sigma ~ dexp( 3 )
+    ), data=list(delta=d$delta) )
 
 # compute posterior sum of 8 increments
 post <- extract.samples(m4)
@@ -139,3 +139,4 @@ dens(dsim)
 
 inc_sum <- sapply( 1:1000 , function(s) sum(rlnorm(8,post$alpha[s],post$sigma[s])) )
 dens(inc_sum)
+
